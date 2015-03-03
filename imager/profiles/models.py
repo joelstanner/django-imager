@@ -25,7 +25,12 @@ class ImagerProfile(models.Model):
 
     @classmethod
     def active(cls):
-        pass
+        active_users = []
+        profiles = ImagerProfile.objects.all()
+        for prof in profiles:
+            if prof.user.is_active is True:
+                active_users.append(prof)
+        return active_users
 
 
 def create_user_profile(sender, instance, created, **kwargs):
