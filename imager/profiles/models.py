@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 class ImagerProfile(models.Model):
 
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User)
 
     picture = models.ImageField()
     phone = models.CharField(max_length=20)
