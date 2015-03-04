@@ -26,19 +26,33 @@ class ImagerProfile(models.Model):
     blocked = models.ManyToManyField("self")
 
     def block(self, IProfile):
+        if IProfile in self.blocked.all():
+            raise ValueError('You been BLOCKED!')
         self.blocked.add(IProfile)
         pass
 
-    def following(self, IProfile):
-        pass
+    def following(self):
+        follow_list = self.follows.all()
+        for follow in follow_list:
+            if follow in self.blocked.all():
+                follow.delete()
+        return follow_list
 
     def followers(self):
-        return self.imagerprofile_set.all()
+        followed_by_list = self.imagerprofile_set.all()
+        for follow in followed_by_list:
+            if follow in self.blocked.all():
+                follow.delete()
+        return followed_by_list
 
     def follow(self, IProfile):
+        if IProfile in self.blocked.all():
+            raise ValueError('You been BLOCKED!')
         self.follows.add(IProfile)
 
     def unfollow(self, IProfile):
+        if IProfile in self.blocked.all():
+            raise ValueError('You been BLOCKED!')
         if type(IProfile) is not type(self):
             raise ValueError()
         self.follows.remove(IProfile)

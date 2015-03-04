@@ -60,6 +60,14 @@ class ImagerProfileMethodTests(TestCase):
         IP.picture = 'test'
         assert IP.picture == 'test'
 
+    def test_following(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_alice, IP_bob.following())
+
     def test_profile_followers_returns_proper_list(self):
         bob = create_user('bob')
         alice = create_user('alice')
@@ -94,11 +102,31 @@ class ImagerProfileMethodTests(TestCase):
         IP_bob.follow(IP_alice)
         self.assertIn(IP_bob, IP_alice.followers())
 
-    # def test_block(self, IProfile):
-    #     bob = create_user('bob')
-    #     alice = create_user('alice')
-    #     IP_bob = ImagerProfile.objects.get(user=bob)
-    #     IP_alice = ImagerProfile.objects.get(user=alice)
-    #     IP_bob.follow(IP_alice)
-    #     IP_alice.block(IP_bob)
-    #     assert True
+    def test_block(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        self.assertNotIn(IP_alice, IP_bob.following())
+
+    def test_follow_blocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        with self.assertRaises(ValueError):
+            IP_bob.follow(IP_alice)
+
+    def test_unfollow_blocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        with self.assertRaises(ValueError):
+            IP_bob.unfollow(IP_alice)
