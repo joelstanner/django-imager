@@ -21,9 +21,9 @@ class ImagerProfile(models.Model):
     phone_priv = models.BooleanField(default=True)
     birthday_priv = models.BooleanField(default=True)
 
-    follows = models.ManyToManyField("self", symmetrical=False)
+    follows = models.ManyToManyField("self", symmetrical=False, blank=True)
 
-    blocked = models.ManyToManyField("self")
+    blocked = models.ManyToManyField("self", blank=True)
 
     def block(self, IProfile):
         if IProfile in self.blocked.all():
