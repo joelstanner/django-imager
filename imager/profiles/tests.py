@@ -66,5 +66,6 @@ class ImagerProfileMethodTests(TestCase):
         alice = create_user('alice')
         IP_bob = ImagerProfile.objects.get(user=bob)
         IP_alice = ImagerProfile.objects.get(user=alice)
-        IP_bob.follows(IP_alice)
-        self.assertEqual(IP_alice.followers(), [IP_bob])
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_alice, IP_bob.follows.all())
+        self.assertNotIn(IP_bob, IP_alice.follows.all())

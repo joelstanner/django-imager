@@ -25,6 +25,7 @@ class Migration(migrations.Migration):
                 ('picture_priv', models.BooleanField(default=True)),
                 ('phone_priv', models.BooleanField(default=True)),
                 ('birthday_priv', models.BooleanField(default=True)),
+                ('following', models.ManyToManyField(related_name='following_rel_+', to='profiles.ImagerProfile')),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
