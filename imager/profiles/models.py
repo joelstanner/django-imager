@@ -22,7 +22,6 @@ class ImagerProfile(models.Model):
     birthday_priv = models.BooleanField(default=True)
 
     follows = models.ManyToManyField("self")
-
     # following = []
     followers = []
 
