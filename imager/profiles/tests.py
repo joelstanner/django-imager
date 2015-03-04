@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
+import os
 
 from profiles.models import ImagerProfile
 
@@ -9,7 +10,6 @@ def create_user(username='testuser'):
     return User.objects.create_user(username)
 
 
-# Create your tests here.
 class ImagerProfileMethodTests(TestCase):
 
     def test_ImagerProfile_active(self):
@@ -53,3 +53,124 @@ class ImagerProfileMethodTests(TestCase):
         bob.save()
         IP = ImagerProfile.objects.get(user=bob)
         assert IP.is_active() is False
+
+    def test_adding_profile_pic(self):
+        bob = create_user('bob')
+        IP = ImagerProfile.objects.get(user=bob)
+        IP.picture = 'test'
+        assert IP.picture == 'test'
+
+    def test_following(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_alice, IP_bob.following())
+
+    def test_profile_followers_returns_proper_list(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_alice, IP_bob.follows.all())
+        self.assertNotIn(IP_bob, IP_alice.follows.all())
+
+    def test_profile_unfollow_removes_followed(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_bob.unfollow(IP_alice)
+        self.assertNotIn(IP_alice, IP_bob.follows.all())
+
+    def test_unfollow_with_nonexistant_profile(self):
+        IP_bob = create_user('bob')
+        IP_bob.delete()
+        alice = create_user('alice')
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        with self.assertRaises(ValueError):
+            IP_alice.unfollow(None)
+
+    def test_followers_returns_proper_list_of_followers(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_bob, IP_alice.followers())
+
+    def test_block(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        self.assertIn(IP_bob, IP_alice.blocked.all())
+
+    def test_blocked_not_in_following(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        self.assertNotIn(IP_alice, IP_bob.following())
+
+    def test_blocked_not_in_followers(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        self.assertNotIn(IP_bob, IP_bob.followers())
+
+    def test_follow_blocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        with self.assertRaises(ValueError):
+            IP_bob.follow(IP_alice)
+
+    def test_unfollow_blocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        with self.assertRaises(ValueError):
+            IP_bob.unfollow(IP_alice)
+
+    def test_unblock_works_unblocking_follow(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        IP_alice.unblock(IP_bob)
+        self.assertIn(IP_bob, IP_alice.followers())
+
+    def test_unblocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_alice.block(IP_bob)
+        IP_alice.unblock(IP_bob)
+        self.assertNotIn(IP_bob, IP_alice.blocked.all())
+
+    def test_unblocked_nonexistant_user_raises_error(self):
+        IP_bob = create_user('bob')
+        alice = create_user('alice')
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        with self.assertRaises(ValueError):
+            IP_alice.unblock(IP_bob)

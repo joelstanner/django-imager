@@ -2,34 +2,34 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.utils.timezone
+import datetime
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name='ImagerProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(default=django.utils.timezone.now, verbose_name='last login')),
-                ('name', models.CharField(max_length=255)),
-                ('email', models.CharField(unique=True, max_length=255)),
-                ('picture', models.FileField(max_length=255, upload_to=b'')),
-                ('phone', models.CharField(max_length=20)),
-                ('birthday', models.DateField()),
-                ('name_piv', models.BooleanField(default=True)),
-                ('email_piv', models.BooleanField(default=True)),
-                ('picture_piv', models.BooleanField(default=True)),
-                ('phone_piv', models.BooleanField(default=True)),
-                ('birthday_piv', models.BooleanField(default=True)),
+                ('picture', models.ImageField(upload_to=b'', blank=True)),
+                ('phone', models.CharField(default=b'No Phone', max_length=20)),
+                ('birthday', models.DateField(default=datetime.date.today)),
+                ('name_priv', models.BooleanField(default=True)),
+                ('email_priv', models.BooleanField(default=True)),
+                ('picture_priv', models.BooleanField(default=True)),
+                ('phone_priv', models.BooleanField(default=True)),
+                ('birthday_priv', models.BooleanField(default=True)),
+                ('blocked', models.ManyToManyField(related_name='blocked_rel_+', to='profiles.ImagerProfile')),
+                ('follows', models.ManyToManyField(to='profiles.ImagerProfile')),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'abstract': False,
             },
             bases=(models.Model,),
         ),
