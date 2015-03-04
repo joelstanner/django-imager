@@ -167,3 +167,10 @@ class ImagerProfileMethodTests(TestCase):
         IP_alice.block(IP_bob)
         IP_alice.unblock(IP_bob)
         self.assertNotIn(IP_bob, IP_alice.blocked.all())
+
+    def test_unblocked_nonexistant_user_raises_error(self):
+        IP_bob = create_user('bob')
+        alice = create_user('alice')
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        with self.assertRaises(ValueError):
+            IP_alice.unblock(IP_bob)

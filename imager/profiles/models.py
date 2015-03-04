@@ -31,6 +31,8 @@ class ImagerProfile(models.Model):
         self.blocked.add(IProfile)
 
     def unblock(self, IProfile):
+        if IProfile not in self.blocked.all():
+            raise ValueError('Not in blocked list')
         for block in self.blocked.all():
             if block == IProfile:
                 self.blocked.remove(block)
