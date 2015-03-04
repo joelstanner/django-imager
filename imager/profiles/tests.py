@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
+import os
 
 from profiles.models import ImagerProfile
 
@@ -56,4 +57,6 @@ class ImagerProfileMethodTests(TestCase):
 
     def test_adding_profile_pic(self):
         bob = create_user('bob')
-        assert bob.picture == ""
+        IP = ImagerProfile.objects.get(user=bob)
+        IP.picture = 'test'
+        assert IP.picture == 'test'
