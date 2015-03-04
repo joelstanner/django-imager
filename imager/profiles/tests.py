@@ -53,3 +53,7 @@ class ImagerProfileMethodTests(TestCase):
         bob.save()
         IP = ImagerProfile.objects.get(user=bob)
         assert IP.is_active() is False
+
+    def test_adding_profile_pic(self):
+        bob = create_user('bob')
+        assert bob.picture == ""

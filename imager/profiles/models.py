@@ -8,7 +8,7 @@ import datetime
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    picture = models.ImageField(default='nophoto.jpg')
+    picture = models.ImageField(blank=True)
     phone = models.CharField(max_length=20, default='No Phone')
     birthday = models.DateField(default=datetime.date.today)
 
@@ -37,7 +37,7 @@ class ImagerProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         ImagerProfile.objects.create(
-            birthday='1970-01-01', 
+            birthday='1970-01-01',
             picture='text.txt',
             phone='555-555-5555',
             user=instance)
