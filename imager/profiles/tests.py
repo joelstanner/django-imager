@@ -60,3 +60,11 @@ class ImagerProfileMethodTests(TestCase):
         IP = ImagerProfile.objects.get(user=bob)
         IP.picture = 'test'
         assert IP.picture == 'test'
+
+    def test_profile_followers_returns_proper_list(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follows(IP_alice)
+        self.assertEqual(IP_alice.followers(), [IP_bob])

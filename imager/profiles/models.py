@@ -2,9 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.conf import settings
+from django.utils.encoding import python_2_unicode_compatible
+
 import datetime
 
 
+@python_2_unicode_compatible
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
@@ -17,6 +20,11 @@ class ImagerProfile(models.Model):
     picture_priv = models.BooleanField(default=True)
     phone_priv = models.BooleanField(default=True)
     birthday_priv = models.BooleanField(default=True)
+
+    followers = models.ManyToManyField(User, through='Following')
+
+    def followers(self):
+        pass
 
     def __str__(self):
         return self.user.username
@@ -32,6 +40,13 @@ class ImagerProfile(models.Model):
             if prof.user.is_active is True:
                 active_users.append(prof)
         return active_users
+
+
+class Following(models.Model):
+    """Who's following who"""
+
+    following = models.ForeignKey(ImagerProfile)
+    followed = models.ForeignKey(ImagerProfile)
 
 
 def create_user_profile(sender, instance, created, **kwargs):
