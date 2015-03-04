@@ -148,3 +148,22 @@ class ImagerProfileMethodTests(TestCase):
         IP_alice.block(IP_bob)
         with self.assertRaises(ValueError):
             IP_bob.unfollow(IP_alice)
+
+    def test_unblock_works_unblocking_follow(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        IP_alice.unblock(IP_bob)
+        self.assertIn(IP_bob, IP_alice.followers())
+
+    def test_unblocked(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_alice.block(IP_bob)
+        IP_alice.unblock(IP_bob)
+        self.assertNotIn(IP_bob, IP_alice.blocked.all())

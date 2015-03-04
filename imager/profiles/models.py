@@ -30,6 +30,12 @@ class ImagerProfile(models.Model):
             raise ValueError('You been BLOCKED!')
         self.blocked.add(IProfile)
 
+    def unblock(self, IProfile):
+        for block in self.blocked.all():
+            if block == IProfile:
+                self.blocked.remove(block)
+                break
+
     def following(self):
         follow_list = self.follows.all()
         for follow in follow_list:
@@ -70,12 +76,6 @@ class ImagerProfile(models.Model):
             if prof.user.is_active is True:
                 active_users.append(prof)
         return active_users
-
-
-# class Following(models.Model):
-#     """Who's following who"""
-#     following = models.ForeignKey(ImagerProfile)
-#     followed = models.ForeignKey(ImagerProfile)
 
 
 def create_user_profile(sender, instance, created, **kwargs):
