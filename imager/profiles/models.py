@@ -29,7 +29,6 @@ class ImagerProfile(models.Model):
         if IProfile in self.blocked.all():
             raise ValueError('You been BLOCKED!')
         self.blocked.add(IProfile)
-        pass
 
     def following(self):
         follow_list = self.follows.all()
