@@ -77,3 +77,11 @@ class ImagerProfileMethodTests(TestCase):
         IP_bob.follow(IP_alice)
         IP_bob.unfollow(IP_alice)
         self.assertNotIn(IP_alice, IP_bob.follows.all())
+
+    def test_followers_returns_proper_list_of_followers(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_bob, IP_alice.followers())

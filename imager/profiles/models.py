@@ -30,7 +30,7 @@ class ImagerProfile(models.Model):
         pass
 
     def followers(self):
-        pass
+        return self.imagerprofile_set.all()
 
     def follow(self, IProfile):
         self.follows.add(IProfile)
