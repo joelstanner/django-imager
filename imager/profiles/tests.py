@@ -109,7 +109,25 @@ class ImagerProfileMethodTests(TestCase):
         IP_alice = ImagerProfile.objects.get(user=alice)
         IP_bob.follow(IP_alice)
         IP_alice.block(IP_bob)
+        self.assertIn(IP_bob, IP_alice.blocked.all())
+
+    def test_blocked_not_in_following(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
         self.assertNotIn(IP_alice, IP_bob.following())
+
+    def test_blocked_not_in_followers(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_alice.block(IP_bob)
+        self.assertNotIn(IP_bob, IP_bob.followers())
 
     def test_follow_blocked(self):
         bob = create_user('bob')
