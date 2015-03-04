@@ -21,29 +21,27 @@ class ImagerProfile(models.Model):
     phone_priv = models.BooleanField(default=True)
     birthday_priv = models.BooleanField(default=True)
 
-    follows = models.ManyToManyField("self")
-    # following = []
-    followers = []
+    follows = models.ManyToManyField("self", symmetrical=False)
+
+    blocked = models.ManyToManyField("self")
+
+    def block(self, IProfile):
+        self.blocked.add(IProfile)
+        pass
 
     def following(self, IProfile):
         pass
 
     def followers(self):
-        pass
+        return self.imagerprofile_set.all()
 
     def follow(self, IProfile):
         self.follows.add(IProfile)
-        # add IProfile to list of people following
-        # add that person to following list
-        # IProfile.followers.append[self]
-        pass
 
-    def unfollow(self, Iprofile):
-        self.following.remove(Iprofile)
-        # remove from list of Following
-        # IProfile.followers.remove(self)
-        # following.remove(Iprofile)
-        pass
+    def unfollow(self, IProfile):
+        if type(IProfile) is not type(self):
+            raise ValueError()
+        self.follows.remove(IProfile)
 
     def __str__(self):
         return self.user.username

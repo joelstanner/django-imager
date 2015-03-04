@@ -10,7 +10,6 @@ def create_user(username='testuser'):
     return User.objects.create_user(username)
 
 
-# Create your tests here.
 class ImagerProfileMethodTests(TestCase):
 
     def test_ImagerProfile_active(self):
@@ -69,3 +68,37 @@ class ImagerProfileMethodTests(TestCase):
         IP_bob.follow(IP_alice)
         self.assertIn(IP_alice, IP_bob.follows.all())
         self.assertNotIn(IP_bob, IP_alice.follows.all())
+
+    def test_profile_unfollow_removes_followed(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_bob.unfollow(IP_alice)
+        self.assertNotIn(IP_alice, IP_bob.follows.all())
+
+    def test_unfollow_with_nonexistant_profile(self):
+        IP_bob = create_user('bob')
+        IP_bob.delete()
+        alice = create_user('alice')
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        with self.assertRaises(ValueError):
+            IP_alice.unfollow(None)
+
+    def test_followers_returns_proper_list_of_followers(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        self.assertIn(IP_bob, IP_alice.followers())
+
+    # def test_block(self, IProfile):
+    #     bob = create_user('bob')
+    #     alice = create_user('alice')
+    #     IP_bob = ImagerProfile.objects.get(user=bob)
+    #     IP_alice = ImagerProfile.objects.get(user=alice)
+    #     IP_bob.follow(IP_alice)
+    #     IP_alice.block(IP_bob)
+    #     assert True
