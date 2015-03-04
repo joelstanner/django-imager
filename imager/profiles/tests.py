@@ -10,7 +10,6 @@ def create_user(username='testuser'):
     return User.objects.create_user(username)
 
 
-# Create your tests here.
 class ImagerProfileMethodTests(TestCase):
 
     def test_ImagerProfile_active(self):
@@ -69,3 +68,12 @@ class ImagerProfileMethodTests(TestCase):
         IP_bob.follow(IP_alice)
         self.assertIn(IP_alice, IP_bob.follows.all())
         self.assertNotIn(IP_bob, IP_alice.follows.all())
+
+    def test_profile_unfollow_removes_followed(self):
+        bob = create_user('bob')
+        alice = create_user('alice')
+        IP_bob = ImagerProfile.objects.get(user=bob)
+        IP_alice = ImagerProfile.objects.get(user=alice)
+        IP_bob.follow(IP_alice)
+        IP_bob.unfollow(IP_alice)
+        self.assertNotIn(IP_alice, IP_bob.follows.all())

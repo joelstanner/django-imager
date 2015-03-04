@@ -21,7 +21,7 @@ class ImagerProfile(models.Model):
     phone_priv = models.BooleanField(default=True)
     birthday_priv = models.BooleanField(default=True)
 
-    follows = models.ManyToManyField("self")
+    follows = models.ManyToManyField("self", symmetrical=False)
 
     # following = []
     followers = []
@@ -34,17 +34,9 @@ class ImagerProfile(models.Model):
 
     def follow(self, IProfile):
         self.follows.add(IProfile)
-        # add IProfile to list of people following
-        # add that person to following list
-        # IProfile.followers.append[self]
-        pass
 
     def unfollow(self, Iprofile):
-        self.following.remove(Iprofile)
-        # remove from list of Following
-        # IProfile.followers.remove(self)
-        # following.remove(Iprofile)
-        pass
+        self.follows.remove(Iprofile)
 
     def __str__(self):
         return self.user.username
