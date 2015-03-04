@@ -61,7 +61,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'imager',
-        'USER': 'roberthaskell',
+        'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '5432',
