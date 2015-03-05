@@ -9,13 +9,19 @@ import datetime
 
 @python_2_unicode_compatible
 class Photo(models.Model):
+    '''Represent an individual photo'''
 
-    def __str__():
-        pass
+    profile = models.ForeignKey('profiles.ImagerProfile')
+
+    photo = models.ImageField(blank=False)
+
+    def __str__(self):
+        return self.pk
 
 
 @python_2_unicode_compatible
 class Album(models.Model):
+    '''Represent an individual album of photos'''
 
-    def __str__():
-        pass
+    def __str__(self):
+        return self.pk
