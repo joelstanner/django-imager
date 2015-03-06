@@ -109,7 +109,7 @@ class ImagerProfileMethodTests(TestCase):
         IP_alice = ImagerProfile.objects.get(user=alice)
         IP_bob.follow(IP_alice)
         IP_alice.block(IP_bob)
-        self.assertIn(IP_bob, IP_alice.blocked.all())
+        self.assertIn(IP_alice, IP_bob.blocked_by())
 
     def test_blocked_not_in_following(self):
         bob = create_user('bob')

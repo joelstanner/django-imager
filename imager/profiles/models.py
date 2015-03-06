@@ -21,12 +21,21 @@ class ImagerProfile(models.Model):
     phone_priv = models.BooleanField(default=True)
     birthday_priv = models.BooleanField(default=True)
 
-    follows = models.ManyToManyField("self", symmetrical=False, blank=True)
+    follows = models.ManyToManyField("self",
+                                     related_name='followers_set',
+                                     symmetrical=False,
+                                     blank=True)
 
-    blocked = models.ManyToManyField("self", blank=True)
+    blocked = models.ManyToManyField("self",
+                                     related_name='blockedby_set',
+                                     symmetrical=False,
+                                     blank=True)
+
+    def blocked_by(self):
+        return self.blockedby_set.all()
 
     def block(self, IProfile):
-        if IProfile in self.blocked.all():
+        if IProfile in self.blockedby_set.all():
             raise ValueError('You been BLOCKED!')
         self.blocked.add(IProfile)
 
@@ -41,24 +50,24 @@ class ImagerProfile(models.Model):
     def following(self):
         follow_list = self.follows.all()
         for follow in follow_list:
-            if follow in self.blocked.all():
+            if follow in self.blockedby_set.all():
                 follow.delete()
         return follow_list
 
     def followers(self):
-        followed_by_list = self.imagerprofile_set.all()
+        followed_by_list = self.followers_set.all()
         for follow in followed_by_list:
-            if follow in self.blocked.all():
+            if follow in self.blockedby_set.all():
                 follow.delete()
         return followed_by_list
 
     def follow(self, IProfile):
-        if IProfile in self.blocked.all():
+        if IProfile in self.blockedby_set.all():
             raise ValueError('You been BLOCKED!')
         self.follows.add(IProfile)
 
     def unfollow(self, IProfile):
-        if IProfile in self.blocked.all():
+        if IProfile in self.blockedby_set.all():
             raise ValueError('You been BLOCKED!')
         if type(IProfile) is not type(self):
             raise ValueError()

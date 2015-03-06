@@ -13,7 +13,7 @@ class Photo(models.Model):
 
     profile = models.ForeignKey('profiles.ImagerProfile')
 
-    photo = models.ImageField(blank=False)
+    photo = models.ImageField(blank=True)
 
     def __str__(self):
         return self.pk
