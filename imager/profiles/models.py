@@ -73,11 +73,17 @@ class ImagerProfile(models.Model):
             raise ValueError()
         self.follows.remove(IProfile)
 
-    def __str__(self):
-        return self.user.username
+    def add_album(self, album):
+        if album.user.ImagerProfile not in self.blockedby_set.all():
+            if album.published == 'pb':
+                self.user.album_set.add(album)
 
     def is_active(self):
         return self.user.is_active
+
+
+    def __str__(self):
+        return self.user.username
 
     @classmethod
     def active(cls):
