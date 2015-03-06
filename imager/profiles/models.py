@@ -10,7 +10,7 @@ import datetime
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='ImagerProfile')
     picture = models.ImageField(blank=True)
     phone = models.CharField(max_length=20, default='No Phone')
     birthday = models.DateField(default=datetime.date.today)
