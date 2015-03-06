@@ -146,7 +146,7 @@ class ImagerProfileImageTests(TestCase):
         self.bob = UserFactory.create(username='Bob')
         self.alice = UserFactory.create(username='Alice')
         self.IP_bob = self.bob.ImagerProfile
-        self.IP_alice = self.alic.ImagerProfile
+        self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
 
