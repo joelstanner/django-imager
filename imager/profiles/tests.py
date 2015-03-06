@@ -27,7 +27,7 @@ class AlbumFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Album
 
-    user = UserFactory.create(username='Freddy')
+    profile = UserFactory.create(username='Freddy').ImagerProfile
 
 
 class ImagerProfileMethodTests(TestCase):
@@ -149,7 +149,7 @@ class ImagerProfileImageTests(TestCase):
         self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
-        self.alicealbum = AlbumFactory.create(user=self.alice)
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
 
     def test_following_profile_sees_public_photos(self):
         self.IP_bob.follow(self.IP_alice)
@@ -169,19 +169,19 @@ class ImagerProfileImageTests(TestCase):
     def test_following_profile_sees_public_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
-        self.assertIn(self.alicealbum, self.IP_bob.user.album_set.all())
+        self.assertIn(self.alicealbum, self.IP_bob.album_set.all())
 
     def test_following_profile_does_not_see_private_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.alicealbum.published = 'pv'
-        self.assertNotIn(self.alicealbum, self.IP_bob.user.album_set.all())
+        self.assertNotIn(self.alicealbum, self.IP_bob.album_set.all())
 
     def test_blocked_user_cant_see_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.IP_alice.block(self.IP_bob)
-        self.assertNotIn(self.alicealbum, self.IP_bob.user.album_set.all())
+        self.assertNotIn(self.alicealbum, self.IP_bob.album_set.all())
 
     def test_blocked_user_cant_see_photos(self):
         self.IP_bob.follow(self.IP_alice)

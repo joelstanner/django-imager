@@ -74,9 +74,9 @@ class ImagerProfile(models.Model):
         self.follows.remove(IProfile)
 
     def add_album(self, album):
-        if album.user.ImagerProfile not in self.blockedby_set.all():
+        if album.profile not in self.blockedby_set.all():
             if album.published == 'pb':
-                self.user.album_set.add(album)
+                self.profile.album_set.add(album)
 
     def is_active(self):
         return self.user.is_active

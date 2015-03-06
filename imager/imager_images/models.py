@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
-
+import profiles
 import datetime
 
 
@@ -11,7 +11,7 @@ import datetime
 class Album(models.Model):
     '''Represent an individual album of photos'''
 
-    user = models.ForeignKey(User, related_name='album_set')
+    profile = models.ForeignKey(profiles.models.ImagerProfile, related_name='album_set')
     photos = models.ManyToManyField('Photo', symmetrical=False, related_name='album_set')
 
     title = models.CharField(max_length=200, default='No Title')
@@ -37,7 +37,7 @@ class Album(models.Model):
                                  choices=PUBLISHED_CHOICES, default='pv')
 
     def add_photo(self, photo):
-        if photo.profile.user != self.user:
+        if photo.profile != self.profile:
             raise AttributeError()
         self.photos.add(photo)
 
@@ -62,7 +62,7 @@ class Photo(models.Model):
         (SHARED, 'shared')
     )
 
-    profile = models.ForeignKey('profiles.ImagerProfile', related_name='photo_set')
+    profile = models.ForeignKey(profiles.models.ImagerProfile, related_name='photo_set')
 
     album = models.ManyToManyField(Album, related_name='photo_set',
                                    null=True, blank=True)
