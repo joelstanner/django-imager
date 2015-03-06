@@ -27,11 +27,12 @@ class Photo(models.Model):
         (PUBLIC, 'public'),
         (PRIVATE, 'private'),
         (SHARED, 'shared')
-        )
+    )
 
     profile = models.ForeignKey('profiles.ImagerProfile', related_name='photo')
 
-    album = models.ManyToManyField(Album, related_name='photo', null=True, blank=True)
+    album = models.ManyToManyField(Album, related_name='photo',
+                                   null=True, blank=True)
 
     photo = models.ImageField(blank=True, null=True)
 
@@ -42,7 +43,8 @@ class Photo(models.Model):
     date_modified = models.DateField(auto_now=True)
     date_published = models.DateField(null=True)
 
-    published = models.CharField(max_length=2, choices=PUBLISHED_CHOICES, default='pv')
+    published = models.CharField(max_length=2,
+                                 choices=PUBLISHED_CHOICES, default='pv')
 
     def __str__(self):
         return self.title
