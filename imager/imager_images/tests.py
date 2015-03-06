@@ -1,7 +1,6 @@
 from __future__ import print_function
 from django.test import TestCase
 import unittest
-from profiles.models import ImagerProfile
 from django.contrib.auth.models import User
 from models import Photo, Album
 import factory
