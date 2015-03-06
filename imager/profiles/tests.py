@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 import factory
 from profiles.models import ImagerProfile
+from imager_images.models import Photo, Album
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -13,8 +14,20 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = 'bob1'
 
 
-def create_user(username='testuser'):
-    return User.objects.create_user(username)
+class PhotoFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Photo
+
+    profile = UserFactory.create(username='Bobby').ImagerProfile
+
+
+class AlbumFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Album
+
+    user = UserFactory.create(username='Freddy')
 
 
 class ImagerProfileMethodTests(TestCase):
@@ -38,10 +51,10 @@ class ImagerProfileMethodTests(TestCase):
 
     def test_create_user_creates_ImagerProfile(self):
         assert len(ImagerProfile.objects.all()) == 5
-        bobby = create_user('bobby')
+        bobbo = UserFactory.create(username='bobbo')
         assert len(ImagerProfile.objects.all()) == 6
         IP = ImagerProfile.objects.all()[5]
-        assert IP.user == bobby
+        assert IP.user == bobbo
 
     def test_delete_user_deletes_associated_IProfile(self):
         self.bob1.delete()
@@ -126,3 +139,46 @@ class ImagerProfileMethodTests(TestCase):
     def test_unblocked_nonexistant_user_raises_error(self):
         with self.assertRaises(ValueError):
             self.IP_alice.unblock(None)
+
+
+class ImagerProfileImageTests(TestCase):
+    def setUp(self):
+        self.bob = UserFactory.create(username='Bob')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.IP_alice = self.alic.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
+
+    def test_following_profile_sees_public_photos(self):
+        pass
+
+    def test_following_profile_does_not_see_private_photos(self):
+        pass
+
+    def test_following_profile_sees_public_albums(self):
+        pass
+
+    def test_following_profile_does_not_see_private_albums(self):
+        pass
+
+    def test_only_one_other_profile_sees_shared_photos(self):
+        pass
+
+    def test_only_one_other_profile_sees_shared_albums(self):
+        pass
+
+    def test_blocked_user_cant_see_photos_or_albumse(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
