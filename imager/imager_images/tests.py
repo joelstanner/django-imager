@@ -29,11 +29,14 @@ class TestPhoto(TestCase):
     def setUp(self):
         self.user1 = UserFactory.create()
         self.user2 = UserFactory.create(username='Alice')
+        self.photo1 = PhotoFactory.create(profile=self.user1.ImagerProfile)
+        self.photo2 = PhotoFactory.create(profile=self.user2.ImagerProfile)
 
     def test_create_a_new_photo_file(self):
-        photo1 = PhotoFactory.create()
-        self.assertEquals(photo1.profile.user.username, 'Bobby')
-        self.assertEquals(photo1.title, 'No Title')
-        self.assertEquals(photo1.description, 'No Description')
-        self.assertEquals(photo1.published, 'pv')
+        self.assertEquals(self.photo1.profile.user.username, 'Bob')
+        self.assertEquals(self.photo1.title, 'No Title')
+        self.assertEquals(self.photo1.description, 'No Description')
+        self.assertEquals(self.photo1.published, 'pv')
 
+    #def test_photo_belongs_to_unique_user(self):
+    #    pass
