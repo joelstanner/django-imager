@@ -21,7 +21,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
 
-    imagerprofile = UserFactory.create().ImagerProfile
+    profile = UserFactory.create(username='Bobby').ImagerProfile
 
 
 class TestPhoto(TestCase):
@@ -30,10 +30,10 @@ class TestPhoto(TestCase):
         self.user1 = UserFactory.create()
         self.user2 = UserFactory.create(username='Alice')
 
-    @unittest.skip("don't test")
-    def test_Photo_saves_a_picture(self):
-        self.user1.photo
-        pass
-
     def test_create_a_new_photo_file(self):
         photo1 = PhotoFactory.create()
+        self.assertEquals(photo1.profile.user.username, 'Bobby')
+        self.assertEquals(photo1.title, 'No Title')
+        self.assertEquals(photo1.description, 'No Description')
+        self.assertEquals(photo1.published, 'pv')
+
