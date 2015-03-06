@@ -11,6 +11,8 @@ import datetime
 class Album(models.Model):
     '''Represent an individual album of photos'''
 
+    user = models.ForeignKey(User, related_name='album')
+
     def __str__(self):
         return self.pk
 
