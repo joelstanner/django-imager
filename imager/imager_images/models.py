@@ -11,7 +11,38 @@ import datetime
 class Album(models.Model):
     '''Represent an individual album of photos'''
 
-    user = models.ForeignKey(User, related_name='album')
+    user = models.ForeignKey(User, related_name='album_set')
+    photos = models.ManyToManyField('Photo', symmetrical=False, related_name='album_set')
+
+    title = models.CharField(max_length=200, default='No Title')
+    description = models.TextField(default='No Description')
+
+    cover = models.ImageField(blank=True, null=True)
+
+    date_uploaded = models.DateField(auto_now_add=True)
+    date_modified = models.DateField(auto_now=True)
+    date_published = models.DateField(null=True)
+
+    PUBLIC = 'pb'
+    PRIVATE = 'pv'
+    SHARED = 'sh'
+
+    PUBLISHED_CHOICES = (
+        (PUBLIC, 'public'),
+        (PRIVATE, 'private'),
+        (SHARED, 'shared')
+    )
+
+    published = models.CharField(max_length=2,
+                                 choices=PUBLISHED_CHOICES, default='pv')
+
+    def add_photo(self, photo):
+        if photo.profile.user != self.user:
+            raise AttributeError()
+        self.photos.add(photo)
+
+    def designate_cover(self, photo):
+        self.cover = photo.photo
 
     def __str__(self):
         return self.pk
@@ -33,7 +64,7 @@ class Photo(models.Model):
 
     profile = models.ForeignKey('profiles.ImagerProfile', related_name='photo')
 
-    album = models.ManyToManyField(Album, related_name='photo',
+    album = models.ManyToManyField(Album, related_name='photo_set',
                                    null=True, blank=True)
 
     photo = models.ImageField(blank=True, null=True)
