@@ -62,7 +62,7 @@ class Photo(models.Model):
         (SHARED, 'shared')
     )
 
-    profile = models.ForeignKey('profiles.ImagerProfile', related_name='photo')
+    profile = models.ForeignKey('profiles.ImagerProfile', related_name='photo_set')
 
     album = models.ManyToManyField(Album, related_name='photo_set',
                                    null=True, blank=True)

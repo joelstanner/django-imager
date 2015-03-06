@@ -149,27 +149,46 @@ class ImagerProfileImageTests(TestCase):
         self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
+        self.alicealbum = AlbumFactory.create(user=self.alice)
 
     def test_following_profile_sees_public_photos(self):
-        pass
+        self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.photo_set.add(self.alicephoto)
+        self.assertIn(self.alicephoto, self.IP_bob.photo_set.all())
+
+    def test_following_profile_does_not_get_private_photos(self):
+        with self.assertRaises(ValueError):
+            self.IP_bob.add(self.alicephoto)
 
     def test_following_profile_does_not_see_private_photos(self):
-        pass
+        self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.photo_set.add(self.alicephoto)
+        self.alicephoto.published = 'pv'
+        self.assertNotIn(self.alicephoto, self.IP_bob.photo_set.all())
 
     def test_following_profile_sees_public_albums(self):
-        pass
+        self.IP_bob.follow(self.IP_alice)
+        self.Ip_bob.add_album(self.alicealbum)
+        self.assertIn(self.alicealbum, self.IP_bob.user.album_set.all())
 
     def test_following_profile_does_not_see_private_albums(self):
-        pass
+        self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.add_album(self.alicealbum)
+        self.alicealbum.published = 'pv'
+        self.assertNotIn(self.alicealbum, self.IP_bob.user.album_set.all())
 
-    def test_only_one_other_profile_sees_shared_photos(self):
-        pass
+    def test_blocked_user_cant_see_albums(self):
+        self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.add_album(self.alicealbum)
+        self.IP_alice.block(self.IP_bob)
+        self.assertNotIn(self.alicealbum, self.IP_bob.user.album_set.all())
 
-    def test_only_one_other_profile_sees_shared_albums(self):
-        pass
+    def test_blocked_user_cant_see_photos(self):
+        self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.add_album(self.alicephoto)
+        self.IP_alice.block(self.IP_bob)
+        self.assertNotIn(self.alicephoto, self.IP_bob.photo_set.all())
 
-    def test_blocked_user_cant_see_photos_or_albumse(self):
-        pass
 
 
 

@@ -58,6 +58,7 @@ class TestAlbum(TestCase):
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
         self.freddyalbum = AlbumFactory.create()
         self.bobalbum = AlbumFactory.create(user=self.bob)
+        self.bobalbum2 = AlbumFactory.create(user=self.bob)
 
     def test_album_has_a_user(self):
         self.assertEqual(self.bobalbum.user.username, 'Bob')
@@ -86,3 +87,9 @@ class TestAlbum(TestCase):
     def test_other_users_cant_add_to_album(self):
         with self.assertRaises(AttributeError):
             self.bobalbum.add_photo(self.alicephoto)
+
+    def test_one_photo_in_multiple_albums(self):
+        self.bobalbum.photos.add(self.bobphoto)
+        self.bobalbum2.photos.add(self.bobphoto)
+        self.assertIn(self.bobphoto, self.bobalbum.photos.all())
+        self.assertIn(self.bobphoto, self.bobalbum2.photos.all())
