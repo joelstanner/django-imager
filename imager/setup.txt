@@ -1,0 +1,6 @@
+from profiles.models import Person, Group, Membership
+beatles = Group.objects.create(name='The beatles')
+bob = Person.objects.create(name='bob')
+alice = Person.objects.create(name='alice')
+beatles.add_member(bob)
+beatles.add_member(alice)

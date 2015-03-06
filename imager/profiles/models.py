@@ -7,6 +7,34 @@ from django.utils.encoding import python_2_unicode_compatible
 import datetime
 
 
+class Person(models.Model):
+    name = models.CharField(max_length=128)
+    blocked = models.BooleanField(default=False)
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.name
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=128)
+
+    members = models.ManyToManyField(Person, through='Membership', related_name='group_set')
+
+    def add_member(self, member):
+        pass
+
+    def active_members(self):
+        return self.members.get(name='bob')
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.name
+
+
+class Membership(models.Model):
+    person = models.ForeignKey(Person)
+    group = models.ForeignKey(Group)
+
+
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
 
@@ -73,17 +101,11 @@ class ImagerProfile(models.Model):
             raise ValueError()
         self.follows.remove(IProfile)
 
-    def add_album(self, album):
-        if album.user.ImagerProfile not in self.blockedby_set.all():
-            if album.published == 'pb':
-                self.user.album_set.add(album)
+    def __str__(self):
+        return self.user.username
 
     def is_active(self):
         return self.user.is_active
-
-
-    def __str__(self):
-        return self.user.username
 
     @classmethod
     def active(cls):
