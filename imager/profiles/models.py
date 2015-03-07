@@ -88,18 +88,7 @@ class ImagerProfile(models.Model):
             raise ValueError('This photo is not public')
 
     def show_photos(self):
-        # notblocked = self.photo_set.exclude(profile__blocked=self)
-        # notblocking = notblocked.exclude(profile__blockedby_set=self)
-        # private_photos = notblocking.exclude(published='pv')
-        # myphotos = self.photo_set.filter(profile=self)
-        # return myphotos.all() + private_photos.all()
-
         return self.photo_set.filter(Q(profile__blocked=self) | Q(profile__blockedby_set=self) | Q(published='pv') & Q(profile=self))
-        # photolist = self.photo_set.all()
-        # for photo in photolist:
-        #     if photo.profile not in self.following():
-        #         photolist.remove(photo)
-        # return photolist
 
     def show_albums(self):
         pass

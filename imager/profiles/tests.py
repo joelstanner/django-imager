@@ -163,6 +163,10 @@ class ImagerProfileImageTests(TestCase):
         with self.assertRaises(ValueError):
             self.IP_bob.add_photo(self.alicephoto)
 
+    def test_user_sees_own_private_photos(self):
+        self.bobphoto.published = 'pv'
+        self.assertIn(self.bobphoto, self.IP_bob.show_photos())
+
     def test_following_profile_does_not_see_private_photos(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_photo(self.alicephoto)
