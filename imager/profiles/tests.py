@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import factory
 from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
-
+from unittest import skip
 
 class UserFactory(factory.django.DjangoModelFactory):
 
@@ -192,7 +192,10 @@ class ImagerProfileImageTests(TestCase):
         self.IP_alice.block(self.IP_bob)
         self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
 
-
+    @skip('fake test')
+    def test_blockman(self):
+        self.IP_bob.block(self.IP_alice)
+        self.assertEqual(ImagerProfile.blockman.get_queryset()[0], self.IP_alice)
 
 
 

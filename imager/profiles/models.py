@@ -3,8 +3,15 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
+from django.db.models import Q
 
 import datetime
+
+
+class BlockedManager(models.Manager):
+    def get_queryset(self):
+        qs = super(BlockedManager, self).get_queryset()
+        qs.get(blockedby_set__contains='Bob')
 
 
 @python_2_unicode_compatible
@@ -31,6 +38,9 @@ class ImagerProfile(models.Model):
                                      symmetrical=False,
                                      blank=True)
 
+    objects = models.Manager()
+    blockman = BlockedManager()
+
     def blocked_by(self):
         return self.blockedby_set.all()
 
@@ -42,24 +52,13 @@ class ImagerProfile(models.Model):
     def unblock(self, IProfile):
         if IProfile not in self.blocked.all():
             raise ValueError('Not in blocked list')
-        for block in self.blocked.all():
-            if block == IProfile:
-                self.blocked.remove(block)
-                break
+        self.blocked.remove(IProfile)
 
     def following(self):
-        follow_list = self.follows.all()
-        for follow in follow_list:
-            if follow in self.blockedby_set.all():
-                follow.delete()
-        return follow_list
+        return self.follows.exclude(blocked=self)
 
     def followers(self):
-        followed_by_list = self.followers_set.all()
-        for follow in followed_by_list:
-            if follow in self.blockedby_set.all():
-                follow.delete()
-        return followed_by_list
+        return self.followers_set.exclude(blocked=self)
 
     def follow(self, IProfile):
         if IProfile in self.blockedby_set.all():
@@ -75,8 +74,10 @@ class ImagerProfile(models.Model):
 
     def add_album(self, album):
         if album.profile not in self.blockedby_set.all():
-            if album.published == 'pb':
-                self.album_set.add(album)
+            raise ValueError('You been BLOCKED!')
+        if album.published != 'pb':
+            raise ValueError('This album is not public')
+        self.album_set.add(album)
 
     def add_photo(self, photo):
         if photo.profile in self.blockedby_set.all():
@@ -87,11 +88,18 @@ class ImagerProfile(models.Model):
             raise ValueError('This photo is not public')
 
     def show_photos(self):
-        photolist = self.photo_set.all()
-        for photo in photolist:
-            if photo.profile in self.following():
-                photolist.remove(photo)
-        return photolist
+        # notblocked = self.photo_set.exclude(profile__blocked=self)
+        # notblocking = notblocked.exclude(profile__blockedby_set=self)
+        # private_photos = notblocking.exclude(published='pv')
+        # myphotos = self.photo_set.filter(profile=self)
+        # return myphotos.all() + private_photos.all()
+
+        return self.photo_set.filter(Q(profile__blocked=self) | Q(profile__blockedby_set=self) | Q(published='pv') & Q(profile=self))
+        # photolist = self.photo_set.all()
+        # for photo in photolist:
+        #     if photo.profile not in self.following():
+        #         photolist.remove(photo)
+        # return photolist
 
     def show_albums(self):
         pass
@@ -104,12 +112,13 @@ class ImagerProfile(models.Model):
 
     @classmethod
     def active(cls):
-        active_users = []
-        profiles = ImagerProfile.objects.all()
-        for prof in profiles:
-            if prof.user.is_active is True:
-                active_users.append(prof)
-        return active_users
+        return ImagerProfile.objects.exclude(user__is_active=False)
+        # active_users = []
+        # profiles = ImagerProfile.objects.all()
+        # for prof in profiles:
+        #     if prof.user.is_active is True:
+        #         active_users.append(prof)
+        # return active_users
 
 
 def create_user_profile(sender, instance, created, **kwargs):
