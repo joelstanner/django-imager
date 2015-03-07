@@ -7,14 +7,9 @@ from django.db.models import Q
 import datetime
 
 
-class BlockedManager(models.Manager):
-    def get_queryset(self):
-        qs = super(BlockedManager, self).get_queryset()
-        qs.get(blockedby_set__contains='Bob')
-
-
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
+    """Describes the Image Profile for a user"""
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 related_name='ImagerProfile')
@@ -39,7 +34,6 @@ class ImagerProfile(models.Model):
                                      blank=True)
 
     objects = models.Manager()
-    blockman = BlockedManager()
 
     def blocked_by(self):
         return self.blockedby_set.all()
@@ -107,6 +101,7 @@ class ImagerProfile(models.Model):
 
 
 def create_user_profile(sender, instance, created, **kwargs):
+    """Create an ImagerProfile whenever you create a user"""
     if created:
         ImagerProfile.objects.create(
             birthday='1970-01-01',
