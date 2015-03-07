@@ -153,6 +153,7 @@ class ImagerProfileImageTests(TestCase):
                                               title="alice cool shot")
         self.alicephoto.published = 'pb'
         self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
+        self.alicealbum.published = 'pb'
 
     def test_following_profile_sees_public_photos(self):
         self.IP_bob.follow(self.IP_alice)
@@ -170,38 +171,23 @@ class ImagerProfileImageTests(TestCase):
         self.bobphoto.save()
         self.assertIn(self.bobphoto, self.IP_bob.show_photos())
 
-    def test_following_profile_does_not_see_private_photos(self):
-        self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.save()
-        self.IP_bob.add_photo(self.alicephoto)
-        self.IP_bob.save()
-        self.alicephoto.published = 'pv'
-        self.alicephoto.save()
-        self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
-
     def test_following_profile_sees_public_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.assertIn(self.alicealbum, self.IP_bob.show_albums())
 
-    def test_following_profile_does_not_see_private_albums(self):
+    def test_blocked_user_cant_get_albums(self):
         self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.add_album(self.alicealbum)
-        self.alicealbum.published = 'pv'
-        self.alicealbum.save()
-        self.assertNotIn(self.alicealbum, self.IP_bob.show_albums())
-
-    def test_blocked_user_cant_see_albums(self):
-        self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.add_album(self.alicealbum)
         self.IP_alice.block(self.IP_bob)
-        self.assertNotIn(self.alicealbum, self.IP_bob.show_albums())
+        with self.assertRaises(ValueError):
+            self.IP_bob.add_album(self.alicealbum)
 
-    def test_blocked_user_cant_see_photos(self):
+    def test_blocked_user_cant_get_photos(self):
         self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.add_photo(self.alicephoto)
         self.IP_alice.block(self.IP_bob)
-        self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
+        with self.assertRaises(ValueError):
+            self.IP_bob.add_photo(self.alicephoto)
+
 
     @skip('fake test')
     def test_blockman(self):

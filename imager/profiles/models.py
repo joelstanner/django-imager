@@ -73,7 +73,7 @@ class ImagerProfile(models.Model):
         self.follows.remove(IProfile)
 
     def add_album(self, album):
-        if album.profile not in self.blockedby_set.all():
+        if album.profile in self.blockedby_set.all():
             raise ValueError('You been BLOCKED!')
         if album.published != 'pb':
             raise ValueError('This album is not public')
@@ -88,28 +88,12 @@ class ImagerProfile(models.Model):
             raise ValueError('This photo is not public')
 
     def show_photos(self):
-        # photolist = []
-        # for photo in self.photo_set.all():
-        #     if photo.profile not in self.blocked.all():
-        #         if photo.profile not in self.blockedby_set.all():
-        #             if ((photo.profile != self and photo.profile != 'pv') or (photo.profile == self)):
-        #                 photolist.append(photo)
-        # return photolist
-
-        # return self.photo_set.exclude(
-        #    Q(profile__blocked=self) & Q(profile__blockedby_set=self) &
-        #    Q(published='pv')).filter(profile=self)
-
-        return self.photo_set.filter(Q(profile__blocked=self) |
-                                     Q(profile__blockedby_set=self) |
-                                     Q(published='pv') &
-                                     Q(profile=self))
+        return self.photo_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self))
 
     def show_albums(self):
-        return self.album_set.filter(Q(profile__blocked=self) |
-                                     Q(profile__blockedby_set=self) |
-                                     Q(published='pv') &
-                                     Q(profile=self))
+        return self.album_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self))
 
     def is_active(self):
         return self.user.is_active
@@ -120,12 +104,6 @@ class ImagerProfile(models.Model):
     @classmethod
     def active(cls):
         return ImagerProfile.objects.exclude(user__is_active=False)
-        # active_users = []
-        # profiles = ImagerProfile.objects.all()
-        # for prof in profiles:
-        #     if prof.user.is_active is True:
-        #         active_users.append(prof)
-        # return active_users
 
 
 def create_user_profile(sender, instance, created, **kwargs):

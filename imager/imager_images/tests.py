@@ -55,6 +55,7 @@ class TestAlbum(TestCase):
         self.bob = UserFactory.create()
         self.alice = UserFactory.create(username='Alice')
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile)
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
         self.freddyalbum = AlbumFactory.create()
         self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile)
@@ -74,14 +75,14 @@ class TestAlbum(TestCase):
 
     def test_album_add_a_photo(self):
         self.bobalbum.add_photo(self.bobphoto)
-        self.assertIn(self.bobphoto, self.bobalbum.photos.all())
+        self.assertIn(self.bobphoto, self.bobalbum.show_photos())
 
     def test_album_designate_cover(self):
         self.freddyalbum.designate_cover(self.bobphoto)
         self.assertEqual(self.freddyalbum.cover, self.bobphoto.photo)
 
     def test_album_photos_only_from_album_user(self):
-        for photo in self.bobalbum.photo_set.all():
+        for photo in self.bobalbum.show_photos():
             self.assertEqual(photo.profile.user, self.bob)
 
     def test_other_users_cant_add_to_album(self):
@@ -89,7 +90,13 @@ class TestAlbum(TestCase):
             self.bobalbum.add_photo(self.alicephoto)
 
     def test_one_photo_in_multiple_albums(self):
-        self.bobalbum.photos.add(self.bobphoto)
-        self.bobalbum2.photos.add(self.bobphoto)
-        self.assertIn(self.bobphoto, self.bobalbum.photos.all())
-        self.assertIn(self.bobphoto, self.bobalbum2.photos.all())
+        self.bobalbum.add_photo(self.bobphoto)
+        self.bobalbum2.add_photo(self.bobphoto)
+        self.assertIn(self.bobphoto, self.bobalbum.show_photos())
+        self.assertIn(self.bobphoto, self.bobalbum2.show_photos())
+
+    def test_multiple_photos_one_album(self):
+        self.bobalbum.add_photo(self.bobphoto)
+        self.bobalbum.add_photo(self.bobphoto2)
+        self.assertIn(self.bobphoto, self.bobalbum.show_photos())
+        self.assertIn(self.bobphoto2, self.bobalbum.show_photos())
