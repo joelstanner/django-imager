@@ -147,9 +147,10 @@ class ImagerProfileImageTests(TestCase):
         self.alice = UserFactory.create(username='Alice')
         self.IP_bob = self.bob.ImagerProfile
         self.IP_alice = self.alice.ImagerProfile
-        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile, title="bob photo")
         self.bobphoto.published = 'pb'
-        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot")
         self.alicephoto.published = 'pb'
         self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
 
@@ -171,6 +172,7 @@ class ImagerProfileImageTests(TestCase):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_photo(self.alicephoto)
         self.alicephoto.published = 'pv'
+        self.alicephoto.save()
         self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
 
     def test_following_profile_sees_public_albums(self):
