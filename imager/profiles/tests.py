@@ -161,16 +161,20 @@ class ImagerProfileImageTests(TestCase):
 
     def test_following_profile_does_not_get_private_photos(self):
         self.alicephoto.published = 'pv'
+        self.alicephoto.save()
         with self.assertRaises(ValueError):
             self.IP_bob.add_photo(self.alicephoto)
 
     def test_user_sees_own_private_photos(self):
         self.bobphoto.published = 'pv'
+        self.bobphoto.save()
         self.assertIn(self.bobphoto, self.IP_bob.show_photos())
 
     def test_following_profile_does_not_see_private_photos(self):
         self.IP_bob.follow(self.IP_alice)
+        self.IP_bob.save()
         self.IP_bob.add_photo(self.alicephoto)
+        self.IP_bob.save()
         self.alicephoto.published = 'pv'
         self.alicephoto.save()
         self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
@@ -184,6 +188,7 @@ class ImagerProfileImageTests(TestCase):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.alicealbum.published = 'pv'
+        self.alicealbum.save()
         self.assertNotIn(self.alicealbum, self.IP_bob.show_albums())
 
     def test_blocked_user_cant_see_albums(self):

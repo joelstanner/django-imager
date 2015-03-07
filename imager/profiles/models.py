@@ -4,7 +4,6 @@ from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 from django.db.models import Q
-
 import datetime
 
 
@@ -89,29 +88,28 @@ class ImagerProfile(models.Model):
             raise ValueError('This photo is not public')
 
     def show_photos(self):
-        photolist = []
-        for photo in self.photo_set.all():
-            if photo.profile not in self.blocked.all():
-                if photo.profile not in self.blockedby_set.all():
-                    if ((photo.profile != self and photo.profile != 'pv') or (photo.profile == self)):
-                        photolist.append(photo)
-        return photolist
+        # photolist = []
+        # for photo in self.photo_set.all():
+        #     if photo.profile not in self.blocked.all():
+        #         if photo.profile not in self.blockedby_set.all():
+        #             if ((photo.profile != self and photo.profile != 'pv') or (photo.profile == self)):
+        #                 photolist.append(photo)
+        # return photolist
 
-        #return self.photo_set.exclude(
+        # return self.photo_set.exclude(
         #    Q(profile__blocked=self) & Q(profile__blockedby_set=self) &
         #    Q(published='pv')).filter(profile=self)
 
-        #return self.photo_set.filter(Q(profile__blocked=self) |
-        #                             Q(profile__blockedby_set=self) |
-        #                             Q(published='pv') &
-        #                             Q(profile=self))
+        return self.photo_set.filter(Q(profile__blocked=self) |
+                                     Q(profile__blockedby_set=self) |
+                                     Q(published='pv') &
+                                     Q(profile=self))
 
     def show_albums(self):
         return self.album_set.filter(Q(profile__blocked=self) |
                                      Q(profile__blockedby_set=self) |
                                      Q(published='pv') &
                                      Q(profile=self))
-
 
     def is_active(self):
         return self.user.is_active
