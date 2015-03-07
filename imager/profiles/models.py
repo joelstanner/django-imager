@@ -81,11 +81,17 @@ class ImagerProfile(models.Model):
     def add_photo(self, photo):
         if photo.profile in self.blockedby_set.all():
             raise ValueError('You been BLOCKED!')
-        else:
+        if photo.published == 'pb':
             self.photo_set.add(photo)
+        else:
+            raise ValueError('This photo is not public')
 
     def show_photos(self):
-        pass
+        photolist = self.photo_set.all()
+        for photo in photolist:
+            if photo.profile in self.following():
+                photolist.remove(photo)
+        return photolist
 
     def show_albums(self):
         pass

@@ -148,7 +148,9 @@ class ImagerProfileImageTests(TestCase):
         self.IP_bob = self.bob.ImagerProfile
         self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
+        self.bobphoto.published = 'pb'
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
+        self.alicephoto.published = 'pb'
         self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
 
     def test_following_profile_sees_public_photos(self):
@@ -157,6 +159,7 @@ class ImagerProfileImageTests(TestCase):
         self.assertIn(self.alicephoto, self.IP_bob.show_photos())
 
     def test_following_profile_does_not_get_private_photos(self):
+        self.alicephoto.published = 'pv'
         with self.assertRaises(ValueError):
             self.IP_bob.add_photo(self.alicephoto)
 
