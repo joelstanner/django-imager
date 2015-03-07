@@ -153,41 +153,41 @@ class ImagerProfileImageTests(TestCase):
 
     def test_following_profile_sees_public_photos(self):
         self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.photo_set.add(self.alicephoto)
-        self.assertIn(self.alicephoto, self.IP_bob.photo_set.all())
+        self.IP_bob.add_photo(self.alicephoto)
+        self.assertIn(self.alicephoto, self.IP_bob.show_photos())
 
     def test_following_profile_does_not_get_private_photos(self):
         with self.assertRaises(ValueError):
-            self.IP_bob.photo_set.add(self.alicephoto)
+            self.IP_bob.add_photo(self.alicephoto)
 
     def test_following_profile_does_not_see_private_photos(self):
         self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.photo_set.add(self.alicephoto)
+        self.IP_bob.add_photo(self.alicephoto)
         self.alicephoto.published = 'pv'
-        self.assertNotIn(self.alicephoto, self.IP_bob.photo_set.all())
+        self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
 
     def test_following_profile_sees_public_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
-        self.assertIn(self.alicealbum, self.IP_bob.album_set.all())
+        self.assertIn(self.alicealbum, self.IP_bob.show_albums())
 
     def test_following_profile_does_not_see_private_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.alicealbum.published = 'pv'
-        self.assertNotIn(self.alicealbum, self.IP_bob.album_set.all())
+        self.assertNotIn(self.alicealbum, self.IP_bob.show_albums())
 
     def test_blocked_user_cant_see_albums(self):
         self.IP_bob.follow(self.IP_alice)
         self.IP_bob.add_album(self.alicealbum)
         self.IP_alice.block(self.IP_bob)
-        self.assertNotIn(self.alicealbum, self.IP_bob.album_set.all())
+        self.assertNotIn(self.alicealbum, self.IP_bob.show_albums())
 
     def test_blocked_user_cant_see_photos(self):
         self.IP_bob.follow(self.IP_alice)
-        self.IP_bob.photo_set.add(self.alicephoto)
+        self.IP_bob.add_photo(self.alicephoto)
         self.IP_alice.block(self.IP_bob)
-        self.assertNotIn(self.alicephoto, self.IP_bob.photo_set.all())
+        self.assertNotIn(self.alicephoto, self.IP_bob.show_photos())
 
 
 

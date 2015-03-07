@@ -76,11 +76,22 @@ class ImagerProfile(models.Model):
     def add_album(self, album):
         if album.profile not in self.blockedby_set.all():
             if album.published == 'pb':
-                self.profile.album_set.add(album)
+                self.album_set.add(album)
+
+    def add_photo(self, photo):
+        if photo.profile in self.blockedby_set.all():
+            raise ValueError('You been BLOCKED!')
+        else:
+            self.photo_set.add(photo)
+
+    def show_photos(self):
+        pass
+
+    def show_albums(self):
+        pass
 
     def is_active(self):
         return self.user.is_active
-
 
     def __str__(self):
         return self.user.username

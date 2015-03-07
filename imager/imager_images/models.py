@@ -77,7 +77,8 @@ class Photo(models.Model):
     date_published = models.DateField(null=True)
 
     published = models.CharField(max_length=2,
-                                 choices=PUBLISHED_CHOICES, default='pv')
+                                 choices=PUBLISHED_CHOICES,
+                                 default='pv')
 
     def __str__(self):
         return self.title
