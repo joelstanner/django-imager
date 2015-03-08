@@ -5,6 +5,7 @@ from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
 from unittest import skip
 
+
 class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
@@ -147,7 +148,8 @@ class ImagerProfileImageTests(TestCase):
         self.alice = UserFactory.create(username='Alice')
         self.IP_bob = self.bob.ImagerProfile
         self.IP_alice = self.alice.ImagerProfile
-        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile, title="bob photo")
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo")
         self.bobphoto.published = 'pb'
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
                                               title="alice cool shot")
@@ -192,15 +194,5 @@ class ImagerProfileImageTests(TestCase):
     @skip('fake test')
     def test_blockman(self):
         self.IP_bob.block(self.IP_alice)
-        self.assertEqual(ImagerProfile.blockman.get_queryset()[0], self.IP_alice)
-
-
-
-
-
-
-
-
-
-
-
+        self.assertEqual(ImagerProfile.blockman.get_queryset()[0],
+                         self.IP_alice)
