@@ -9,11 +9,11 @@ class Album(models.Model):
 
     profile = models.ForeignKey(profiles.models.ImagerProfile,
                                 related_name='album_set')
-    photos = models.ManyToManyField('Photo', 
+    photos = models.ManyToManyField('Photo',
                                     symmetrical=False,
                                     related_name='album_set')
 
-    title = models.CharField(max_length=200, default='No Title')
+    title = models.CharField(max_length=256, default='No Title')
     description = models.TextField(default='No Description')
 
     cover = models.ImageField(blank=True, null=True)
@@ -73,7 +73,7 @@ class Photo(models.Model):
 
     photo = models.ImageField(blank=True, null=True)
 
-    title = models.CharField(max_length=200, default='No Title')
+    title = models.CharField(max_length=256, default='No Title')
     description = models.TextField(default='No Description')
 
     date_uploaded = models.DateField(auto_now_add=True)
