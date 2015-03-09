@@ -32,13 +32,21 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',
     'profiles',
     'imager_images',
 )
+
+SITE_ID = 1
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,7 +62,9 @@ ROOT_URLCONF = 'imager.urls'
 
 WSGI_APPLICATION = 'imager.wsgi.application'
 
-
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'imager/templates')
+]
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
