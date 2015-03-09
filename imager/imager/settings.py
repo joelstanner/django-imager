@@ -40,12 +40,13 @@ INSTALLED_APPS = (
     'registration',
     'profiles',
     'imager_images',
+    'debug_toolbar',
 )
 
 SITE_ID = 1
 
-ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
-REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = False
 
 
 MIDDLEWARE_CLASSES = (
@@ -62,9 +63,7 @@ ROOT_URLCONF = 'imager.urls'
 
 WSGI_APPLICATION = 'imager.wsgi.application'
 
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'imager/templates')
-]
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
@@ -99,3 +98,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'imager/templates'),
+    os.path.join(BASE_DIR, 'imager/templates/registration'),
+]
