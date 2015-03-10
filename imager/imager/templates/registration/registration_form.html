@@ -2,10 +2,14 @@
 {% load i18n %}
 
 {% block content %}
-<form method="post" action=".">
-  {% csrf_token %}
-  {{ form.as_p }}
-
-  <input type="submit" value="{% trans 'Submit' %}" />
-</form>
+  <div class="container">
+    <form method="post" action=".">
+      {% csrf_token %}
+      {{ form.as_p }}
+    
+    <button class="btn btn-primary"
+            type="submit"
+            value="{% trans 'LOG IN' %}">SUBMIT</button>
+   </form>
+  </div>
 {% endblock %}
