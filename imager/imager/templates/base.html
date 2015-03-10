@@ -4,40 +4,45 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{% static "style.css" %}" />
-    <title>{% block title %}IMAGER{% endblock %}</title>
-     <!-- Bootstrap -->
-    <link href="{{ STATIC_URL }}bootstrap-3.3.2-dist/css/bootstrap.min.css"
-          rel="stylesheet" />
+  <link rel="stylesheet" href="{% static "style.css" %}" />
+  <title>{% block title %}IMAGER{% endblock %}</title>
+  <!-- Bootstrap -->
+  <link href="{{ STATIC_URL }}bootstrap-3.3.2-dist/css/bootstrap.min.css"
+        rel="stylesheet" />
 </head>
 
 <body>
-    <div id="header">
-    {% block header %}
-    <a href="{% url 'home' %}">{% trans "Home" %}</a> | 
+  <nav class="navbar navbar-inverse">
 
-    {% if user.is_authenticated %}
-        {% trans "Logged in" %}: {{ user.username }} 
-        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
-        <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
-    {% else %}
-       <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
-    {% endif %}
+    <div id="header" class="container">
+        {% block header %}
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'home' %}">IMAGER!</a>
+          </div>
+          <div class="nav navbar-right">
+            {% if user.is_authenticated %}
+              {% trans "Logged in" %}: {{ user.username }} 
+              (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
+              <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
+            {% else %}
+              <a class="" href="{% url 'auth_login' %}">{% trans "Login" %}</a>
+            {% endif %}
+        {% endblock %}
+        </div>
+    </div>
+  </nav>
+<div id="content">
+{% block content %}{% endblock %}
+</div>
+
+<div id="footer">
+{% block footer %}
     <hr />
-    {% endblock %}
-    </div>
-
-    <div id="content">
-    {% block content %}{% endblock %}
-    </div>
-
-    <div id="footer">
-    {% block footer %}
-        <hr />
-    {% endblock %}
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="{{ STATIC_URL }}bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+{% endblock %}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
