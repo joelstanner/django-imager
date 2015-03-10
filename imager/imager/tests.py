@@ -2,6 +2,8 @@ from __future__ import print_function
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_images.models import Photo
+from django.conf import settings
+
 
 import factory
 
@@ -33,7 +35,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
 class TestHomepageViews(TestCase):
 
-    stockphoto = ''
+    STOCKPHOTO = settings.MEDIA_ROOT + 'default_stock_photo_640_360.jpg'
 
     def setUp(self):
         self.bob = UserFactory.create()
@@ -52,8 +54,8 @@ class TestHomepageViews(TestCase):
 
     def test_home_page_photo_is_user_photo_or_default(self):
         response = self.client.get('/')
-        self.assertEqual(response.context['photo'], self.publicbobphoto)
+        self.assertEqual(response.context['random_image'], self.publicbobphoto)
 
     def test_home_page_photo_is_stock_if_no_user_photos(self):
         response = self.client.get('/')
-        self.assertEqual(response.context['photo'], self.stockphoto)
+        self.assertEqual(response.context['random_image'], self.STOCKPHOTO)
