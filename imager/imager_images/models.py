@@ -5,7 +5,7 @@ import profiles
 
 class RandomImage(models.Manager):
     def get_queryset(self):
-        return super(RandomImage, self).get_queryset().order_by('?')
+        return super(RandomImage, self).get_queryset().filter(published='pb').order_by('?')
 
 
 @python_2_unicode_compatible

@@ -1,2 +1,3 @@
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile as IP
+p1 = Photo.objects.all()[0]

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block content %}
   <div class="container">
     <div class="jumbotron container-fluid">
@@ -13,7 +13,7 @@
         </div>
         <!--REPLACE BELOW WITH REAL IMAGES FROM THE SITE-->
         <img class="col-md-9 img-rounded img-responsive"
-             src="http://lorempixel.com/640/360/">
+             src="{{ random_photo.photo.url }}">
       </div>
     </div>
   </div>
