@@ -43,11 +43,6 @@ INSTALLED_APPS = (
     'debug_toolbar',
 )
 
-SITE_ID = 1
-
-ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_AUTO_LOGIN = False
-
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -109,3 +104,8 @@ TEMPLATE_DIRS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SITE_ID = 1
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True  # auto-login upon registering
