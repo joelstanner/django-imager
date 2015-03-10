@@ -59,3 +59,4 @@ class TestHomepageViews(TestCase):
     def test_home_page_photo_is_stock_if_no_user_photos(self):
         response = self.client.get('/')
         self.assertEqual(response.context['random_image'], self.STOCKPHOTO)
+
