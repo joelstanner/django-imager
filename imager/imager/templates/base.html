@@ -1,16 +1,20 @@
 {% load i18n %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
+    <link rel="stylesheet" href="{% static "style.css" %}" />
     <title>{% block title %}User test{% endblock %}</title>
+     <!-- Bootstrap -->
+    <link href="{{ STATIC_URL }}bootstrap-3.3.2-dist/css/bootstrap.min.css"
+          rel="stylesheet" />
 </head>
 
 <body>
     <div id="header">
     {% block header %}
-    <a href="#">{% trans "Home" %}</a> | 
+    <a href="{% url 'home' %}">{% trans "Home" %}</a> | 
 
     {% if user.is_authenticated %}
         {% trans "Logged in" %}: {{ user.username }} 
@@ -32,6 +36,8 @@
         <hr />
     {% endblock %}
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
