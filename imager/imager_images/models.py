@@ -3,6 +3,11 @@ from django.utils.encoding import python_2_unicode_compatible
 import profiles
 
 
+class RandomImage(models.Manager):
+    def get_queryset(self):
+        return super(RandomImage, self).get_queryset().order_by('?')
+
+
 @python_2_unicode_compatible
 class Album(models.Model):
     '''Represent an individual album of photos'''
@@ -83,6 +88,8 @@ class Photo(models.Model):
     published = models.CharField(max_length=2,
                                  choices=PUBLISHED_CHOICES,
                                  default='pv')
+    objects = models.Manager()
+    random_image = RandomImage()
 
     def __str__(self):
-        return self.title
+        return "title: "+self.title+", profile: "+str(self.profile)
