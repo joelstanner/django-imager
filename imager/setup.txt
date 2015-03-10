@@ -1,0 +1,2 @@
+from imager_images.models import Photo, Album
+from profiles.models import ImagerProfile as IP

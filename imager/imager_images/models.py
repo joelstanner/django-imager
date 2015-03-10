@@ -92,4 +92,4 @@ class Photo(models.Model):
     random_image = RandomImage()
 
     def __str__(self):
-        return "title: "+self.title+", profile: "+str(self.profile)
+        return self.title
