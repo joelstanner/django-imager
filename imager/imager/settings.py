@@ -107,3 +107,5 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'imager/templates'),
     os.path.join(BASE_DIR, 'imager/templates/registration'),
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
