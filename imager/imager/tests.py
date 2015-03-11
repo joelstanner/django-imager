@@ -2,7 +2,6 @@ from __future__ import print_function
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_images.models import Photo
-from django.conf import settings
 from django.test import Client
 
 
@@ -26,13 +25,6 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     profile = UserFactory.create(username='Bobby').ImagerProfile
     photo = 'picture.jpeg'
 
-#class AlbumFactory(factory.django.DjangoModelFactory):
-#
-#    class Meta:
-#        model = Album
-#
-#    profile = UserFactory.create(username='Freddy').ImagerProfile
-
 
 class TestHomepageViews(TestCase):
 
@@ -44,14 +36,8 @@ class TestHomepageViews(TestCase):
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
         self.publicbobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                                   published='pb')
-        #self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile)
-        #self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
-        #self.freddyalbum = AlbumFactory.create()
-        #self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile)
-        #self.bobalbum2 = AlbumFactory.create(profile=self.bob.ImagerProfile)
 
     def test_empty_url_finds_home_page(self):
-        # import pdb; pdb.set_trace()
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'index.html')
 
@@ -86,9 +72,3 @@ class TestRegistrationViews(TestCase):
                           'password2': 'test'}
                          )
         self.assertEqual(len(User.objects.all()), 1)
-        
-        
-        
-        
-        
-        

@@ -1,6 +1,5 @@
 from __future__ import print_function
 from django.test import TestCase
-import unittest
 from django.contrib.auth.models import User
 from models import Photo, Album
 import factory
@@ -52,7 +51,7 @@ class TestPhoto(TestCase):
         self.assertEqual(self.bobphoto.__str__(),
                          'Photo Title: ' + self.bobphoto.title + '\nOwned by: '
                          + self.bobphoto.profile.user.username
-                        )
+                         )
 
 
 class TestAlbum(TestCase):
@@ -110,4 +109,4 @@ class TestAlbum(TestCase):
         self.assertEqual(self.bobalbum.__str__(),
                          'Album Title: ' + self.bobalbum.title + '\nOwned by: '
                          + self.bobalbum.profile.user.username
-                        )
+                         )
