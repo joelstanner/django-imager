@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/profile', views.home, name='home'),
-    url(r'^foo/', include('profiles.urls'))
+    url(r'^profiles/', include('profiles.urls'))
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
