@@ -15,3 +15,7 @@ def home(request):
             'index.html',
             {'random_photo': '/media/default_stock_photo_640_360.jpg'}
             )
+
+
+def profile_home(request):
+    return render(request, 'profile_page.html')

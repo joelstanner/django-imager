@@ -18,11 +18,11 @@
         {% block header %}
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'home' %}">IMAGER!</a>
+            <a class="navbar-brand" href="{% url 'home_page' %}">IMAGER!</a>
           </div>
           <div class="nav navbar-right">
             {% if user.is_authenticated %}
-              {% trans "Logged in" %}: {{ user.username }} 
+              {% trans "Logged in" %}: <a href="{% url 'home' %}">{{ user.username }}</a> 
               (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
               <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
             {% else %}
