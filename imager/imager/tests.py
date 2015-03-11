@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_images.models import Photo
 from django.conf import settings
+from django.test import Client
 
 
 import factory
@@ -66,3 +67,28 @@ class TestHomepageViews(TestCase):
         self.assertEqual(
             response.context['random_photo'],
             self.STOCKPHOTO_URL)
+
+
+class TestRegistrationViews(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_register_page_works(self):
+        response = self.client.get('/accounts/register/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_new_user(self):
+        self.client.post('/accounts/register/',
+                         {'username': 'bobby',
+                          'email': 'bobby@example.com',
+                          'password1': 'test',
+                          'password2': 'test'}
+                         )
+        self.assertEqual(len(User.objects.all()), 1)
+        
+        
+        
+        
+        
+        
