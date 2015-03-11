@@ -53,7 +53,10 @@ class Album(models.Model):
         return self.photos.all()
 
     def __str__(self):
-        return self.pk
+        return (
+            'Album Title: ' + self.title +
+            '\nOwned by: ' + self.profile.user.username
+        )
 
 
 @python_2_unicode_compatible
@@ -91,4 +94,7 @@ class Photo(models.Model):
     random_image = RandomImage()
 
     def __str__(self):
-        return self.title
+        return (
+            'Photo Title: ' + self.title +
+            '\nOwned by: ' + self.profile.user.username
+        )

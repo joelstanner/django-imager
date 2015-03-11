@@ -48,6 +48,12 @@ class TestPhoto(TestCase):
     def test_photo_belongs_to_unique_user(self):
         self.assertEqual(self.bobphoto.profile.user, self.bob)
 
+    def test_photo__str__returns_correct_string(self):
+        self.assertEqual(self.bobphoto.__str__(),
+                         'Photo Title: ' + self.bobphoto.title + '\nOwned by: '
+                         + self.bobphoto.profile.user.username
+                        )
+
 
 class TestAlbum(TestCase):
 
@@ -99,3 +105,9 @@ class TestAlbum(TestCase):
         self.bobalbum.add_photo(self.bobphoto2)
         self.assertIn(self.bobphoto, self.bobalbum.show_photos())
         self.assertIn(self.bobphoto2, self.bobalbum.show_photos())
+
+    def test_album__str__returns_correct_string(self):
+        self.assertEqual(self.bobalbum.__str__(),
+                         'Album Title: ' + self.bobalbum.title + '\nOwned by: '
+                         + self.bobalbum.profile.user.username
+                        )

@@ -41,7 +41,8 @@ class TestHomepageViews(TestCase):
         self.bob = UserFactory.create()
         self.alice = UserFactory.create(username='Alice')
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
-        self.publicbobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile, published='pb')
+        self.publicbobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                                  published='pb')
         #self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile)
         #self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile)
         #self.freddyalbum = AlbumFactory.create()
