@@ -73,8 +73,7 @@ class Photo(models.Model):
     profile = models.ForeignKey(profiles.models.ImagerProfile,
                                 related_name='photo_set')
 
-    album = models.ManyToManyField(Album, related_name='photo_set',
-                                   null=True, blank=True)
+    album = models.ManyToManyField(Album, related_name='photo_set')
 
     photo = models.ImageField(blank=True, null=True)
 

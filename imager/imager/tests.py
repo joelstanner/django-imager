@@ -23,7 +23,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
         model = Photo
 
     profile = UserFactory.create(username='Bobby').ImagerProfile
-
+    photo = 'picture.jpeg'
 
 #class AlbumFactory(factory.django.DjangoModelFactory):
 #
@@ -35,7 +35,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
 class TestHomepageViews(TestCase):
 
-    STOCKPHOTO = settings.MEDIA_ROOT + 'default_stock_photo_640_360.jpg'
+    STOCKPHOTO_URL = '/media/default_stock_photo_640_360.jpg'
 
     def setUp(self):
         self.bob = UserFactory.create()
@@ -49,14 +49,19 @@ class TestHomepageViews(TestCase):
         #self.bobalbum2 = AlbumFactory.create(profile=self.bob.ImagerProfile)
 
     def test_empty_url_finds_home_page(self):
+        # import pdb; pdb.set_trace()
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'index.html')
 
     def test_home_page_photo_is_user_photo_or_default(self):
         response = self.client.get('/')
-        self.assertEqual(response.context['random_image'], self.publicbobphoto)
+        self.assertEqual(
+            response.context['random_photo'],
+            self.publicbobphoto.photo.url)
 
     def test_home_page_photo_is_stock_if_no_user_photos(self):
+        self.publicbobphoto.delete()
         response = self.client.get('/')
-        self.assertEqual(response.context['random_image'], self.STOCKPHOTO)
-
+        self.assertEqual(
+            response.context['random_photo'],
+            self.STOCKPHOTO_URL)

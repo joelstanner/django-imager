@@ -64,9 +64,8 @@ class TestAlbum(TestCase):
     def test_album_has_a_profile(self):
         self.assertEqual(self.bobalbum.profile, self.bob.ImagerProfile)
 
-    @unittest.skip('broken test')
     def test_new_album_is_empty(self):
-        self.assertEqual(self.freddyalbum.photos.all(), [])
+        self.assertEqual(len(self.freddyalbum.photos.all()), 0)
 
     def test_album_attributes(self):
         self.assertEqual(self.freddyalbum.title, 'No Title')

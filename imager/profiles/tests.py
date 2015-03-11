@@ -189,10 +189,3 @@ class ImagerProfileImageTests(TestCase):
         self.IP_alice.block(self.IP_bob)
         with self.assertRaises(ValueError):
             self.IP_bob.add_photo(self.alicephoto)
-
-
-    @skip('fake test')
-    def test_blockman(self):
-        self.IP_bob.block(self.IP_alice)
-        self.assertEqual(ImagerProfile.blockman.get_queryset()[0],
-                         self.IP_alice)
