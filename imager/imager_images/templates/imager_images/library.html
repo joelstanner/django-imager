@@ -1,16 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class='container'>
 {% load thumbnail %}
 
-<h1>{{Profile.user.username}}
+    <h1>{{Profile.user.username}}</h1>
 
-<h1>{{Photos}}</h1>
-{% for photo in Photos %}
-   {% thumbnail photo.photo "100x100" crop="center" as im %}
-        <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
-    {% endthumbnail %}
-{% endfor %}
-<h1>{{Albums}}</h1>
-{% for album in Albums %}
-   {% thumbnail album.cover "100x100" crop="center" as im %}
-        <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
-    {% endthumbnail %}
-{% endfor %}
+    <h1>{{Photos}}</h1>
+    {% for photo in Photos %}
+       {% thumbnail photo.photo "100x100" crop="center" as im %}
+            <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+    {% endfor %}
+    <h1>{{Albums}}</h1>
+    {% for album in Albums %}
+       {% thumbnail album.cover "100x100" crop="center" as im %}
+            <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+    {% endfor %}
+</div>
+
+{% endblock %}
