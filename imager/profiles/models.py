@@ -83,11 +83,13 @@ class ImagerProfile(models.Model):
 
     def show_photos(self):
         return self.photo_set.exclude(Q(profile__blocked=self) |
-                                      Q(profile__blockedby_set=self))
+                                      Q(profile__blockedby_set=self) |
+                                      Q(published='pv'))
 
     def show_albums(self):
         return self.album_set.exclude(Q(profile__blocked=self) |
-                                      Q(profile__blockedby_set=self))
+                                      Q(profile__blockedby_set=self) |
+                                      Q(published='pv'))
 
     def is_active(self):
         return self.user.is_active
