@@ -43,9 +43,9 @@
             {% endif %}
         </tr>
     </table>
-    <h1>{{ object.user.username }} has {{ object.show_photos.count }} Photos:</h1>
+    <h1>{{ object.user.username }} has {{ object.photo_set.count }} Photos:</h1>
     <ul>
-        {% for photo in object.show_photos.all %}
+        {% for photo in object.photo_set.all %}
             <li>{{ photo.title }}</li>
         {% endfor %}
     </ul>
