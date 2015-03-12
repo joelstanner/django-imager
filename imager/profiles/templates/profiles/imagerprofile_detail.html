@@ -1,2 +1,31 @@
-<h1>{{object.user.username}}</h1>
-<img src='{{ object.picture.url }}'>
+{% extends "base.html" %}
+{% block content %}
+<div class='container'>
+    <h1>{{object.user.username}}</h1>
+    <img src='{{ object.picture.url }}'>
+    <h1>{{ object.user.username }} has {{ object.show_photos.count }} Photos:</h1>
+    <ul>
+        {% for photo in object.show_photos.all %}
+            <li>{{ photo.title }}</li>
+        {% endfor %}
+    </ul>
+    <h1>{{ object.user.username }} has {{ object.show_albums.count }} Albums:</h1>
+    <ul>
+        {% for album in object.show_albums.all %}
+            <li>{{ album.title }}</li>
+        {% endfor %}
+    </ul>
+    <h1>{{ object.user.username }} is following {{ object.followers.all.count }} People:</h1>
+    <ul>
+        {% for follower in object.following.all %}
+            <li>{{ follower.user.username }}</li>
+        {% endfor %}
+    </ul>
+    <h1>{{ object.user.username }} has {{ object.followers.all.count }} Followers:</h1>
+    <ul>
+        {% for follower in object.followers.all %}
+            <li>{{ follower.user.username }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock%}
