@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import Client
 import factory
 from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
@@ -189,3 +190,51 @@ class ImagerProfileImageTests(TestCase):
         self.IP_alice.block(self.IP_bob)
         with self.assertRaises(ValueError):
             self.IP_bob.add_photo(self.alicephoto)
+
+
+class ProfilePageTests(TestCase):
+
+    def setUp(self):
+        self.bob = UserFactory.create(username='Bob')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        
+        self.IP_bob.save()
+        
+        self.IP_alice = self.alice.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo")
+        self.bobphoto.published = 'pb'
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot")
+        self.alicephoto.published = 'pb'
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
+        self.alicealbum.published = 'pb'
+
+        self.client = Client()
+
+    def test_profile_page(self):
+        response = self.client.get('/profiles/' + str(ImagerProfile.objects.all()[0].pk))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_profile_page_displays_correct_privacy_settings(self):
+        pass
+    
+    def test_profile_page_displays_correct_profile_picture(self):
+        pass
+    
+    def test_profile_page_lists_correct_number_of_photos(self):
+        pass
+
+    def test_profile_page_lists_correct_number_of_albums(self):
+        pass
+
+    def test_profile_page_lists_correct_number_of_followers(self):
+        pass
+
+    def test_login_redirects_to_profile_page_upon_succesful_login(self):
+        pass
+    
+    def test_displayed_logged_in_as_name_is_link_to_profile_page(self):
+        pass
+    
