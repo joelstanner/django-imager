@@ -179,7 +179,7 @@ class ImagerProfileImageTests(TestCase):
     def test_user_sees_own_private_photos(self):
         self.bobphoto.published = 'pv'
         self.bobphoto.save()
-        self.assertIn(self.bobphoto, self.IP_bob.show_photos())
+        self.assertIn(self.bobphoto, self.IP_bob.show_all_photos())
 
     def test_following_profile_sees_public_albums(self):
         self.IP_bob.follow(self.IP_alice)

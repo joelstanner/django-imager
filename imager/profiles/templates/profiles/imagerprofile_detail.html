@@ -45,7 +45,7 @@
     </table>
     <h1>{{ object.user.username }} has {{ object.photo_set.count }} Photos:</h1>
     <ul>
-        {% for photo in object.photo_set.all %}
+        {% for photo in object.show_all_photos %}
             <li>{{ photo.title }}</li>
         {% endfor %}
     </ul>

@@ -86,6 +86,9 @@ class ImagerProfile(models.Model):
                                       Q(profile__blockedby_set=self) |
                                       Q(published='pv'))
 
+    def show_all_photos(self):
+        return self.photo_set.all()
+
     def show_albums(self):
         return self.album_set.exclude(Q(profile__blocked=self) |
                                       Q(profile__blockedby_set=self) |
