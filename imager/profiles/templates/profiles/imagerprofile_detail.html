@@ -1,8 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
 <div class='container'>
+    <a href=''>Library</a><br/>
+    <a href=''>Stream</a>
     <h1>{{object.user.username}}</h1>
     <img src='{{ object.picture.url }}'>
+    <table style="width:100%">
+        <tr>
+            <td>Phone</td>
+            <td>{{object.phone}}</td> 
+            {% if object.phone_priv %}     
+                <td>Private</td>
+            {% else %}
+                <td>Public</td>>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Birthday</td>
+            <td>{{object.birthday}}</td> 
+            {% if object.birthday_priv %}     
+                <td>Private</td>
+            {% else %}
+                <td>Public</td>>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{object.user.username}}</td> 
+            {% if object.name_priv %}     
+                <td>Private</td>
+            {% else %}
+                <td>Public</td>>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Pic</td>
+            <td>{{object.picture}}</td> 
+            {% if object.picture_priv %}     
+                <td>Private</td>
+            {% else %}
+                <td>Public</td>>
+            {% endif %}
+        </tr>
+    </table>
     <h1>{{ object.user.username }} has {{ object.show_photos.count }} Photos:</h1>
     <ul>
         {% for photo in object.show_photos.all %}
