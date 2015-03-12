@@ -7,9 +7,9 @@ def library(request, pk):
     return render(request,
                   'imager_images/library.html',
                   {
-                    'Photos': ImagerProfile.objects.all()[pk].show_photos(),
-                    'Albums': ImagerProfile.objects.all()[pk].show_albums(),
-                    'Profile': ImagerProfile.objects.all()[pk]
+                    'Photos': ImagerProfile.objects.get(pk=pk).show_photos(),
+                    'Albums': ImagerProfile.objects.get(pk=pk).show_albums(),
+                    'Profile': ImagerProfile.objects.get(pk=pk)
                   })
 
 def stream(request, pk):

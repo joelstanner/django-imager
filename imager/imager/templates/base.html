@@ -22,7 +22,7 @@
           </div>
           <div class="nav navbar-right">
             {% if user.is_authenticated %}
-              {% trans "Logged in" %}: <a href="{% url 'home' %}">{{ user.username }}</a> 
+              {% trans "Logged in" %}: <a href="/profiles/{{user.id}}">{{ user.username }}</a> 
               (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
               <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
             {% else %}
