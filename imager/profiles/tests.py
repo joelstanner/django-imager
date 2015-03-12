@@ -142,6 +142,13 @@ class ImagerProfileMethodTests(TestCase):
         with self.assertRaises(ValueError):
             self.IP_alice.unblock(None)
 
+    def test_privacy_settings(self):
+        self.assertTrue(self.IP_bob.name_priv)
+        self.assertTrue(self.IP_bob.email_priv)
+        self.assertTrue(self.IP_bob.picture_priv)
+        self.assertTrue(self.IP_bob.phone_priv)
+        self.assertTrue(self.IP_bob.birthday_priv)
+
 
 class ImagerProfileImageTests(TestCase):
     def setUp(self):
@@ -192,15 +199,14 @@ class ImagerProfileImageTests(TestCase):
             self.IP_bob.add_photo(self.alicephoto)
 
 
+
+
 class ProfilePageTests(TestCase):
 
     def setUp(self):
         self.bob = UserFactory.create(username='Bob')
         self.alice = UserFactory.create(username='Alice')
         self.IP_bob = self.bob.ImagerProfile
-        
-        self.IP_bob.save()
-        
         self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                             title="bob photo")
@@ -216,13 +222,15 @@ class ProfilePageTests(TestCase):
     def test_profile_page(self):
         response = self.client.get('/profiles/' + str(ImagerProfile.objects.all()[0].pk))
         self.assertEqual(response.status_code, 200)
-    
-    def test_profile_page_displays_correct_privacy_settings(self):
-        pass
-    
+
+    def test_profile_page_displays_correct_template(self):
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
+        self.assertTemplateUsed(response, 'profiles/imagerprofile_detail.html')
+
     def test_profile_page_displays_correct_profile_picture(self):
         pass
-    
+
     def test_profile_page_lists_correct_number_of_photos(self):
         pass
 
@@ -234,7 +242,7 @@ class ProfilePageTests(TestCase):
 
     def test_login_redirects_to_profile_page_upon_succesful_login(self):
         pass
-    
+
     def test_displayed_logged_in_as_name_is_link_to_profile_page(self):
         pass
-    
+
