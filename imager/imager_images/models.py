@@ -16,7 +16,9 @@ class Album(models.Model):
                                 related_name='album_set')
     photos = models.ManyToManyField('Photo',
                                     symmetrical=False,
-                                    related_name='album_set')
+                                    related_name='album_set',
+                                    blank=True,
+                                    null=True)
 
     title = models.CharField(max_length=256, default='No Title')
     description = models.TextField(default='No Description')
@@ -76,7 +78,10 @@ class Photo(models.Model):
     profile = models.ForeignKey(profiles.models.ImagerProfile,
                                 related_name='photo_set')
 
-    album = models.ManyToManyField(Album, related_name='photo_set')
+    album = models.ManyToManyField(Album,
+                                   related_name='photo_set',
+                                   blank=True,
+                                   null=True)
 
     photo = models.ImageField(blank=True, null=True)
 
