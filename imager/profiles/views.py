@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from models import ImagerProfile
 from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import login_required
 
 
 def profile_home(request):

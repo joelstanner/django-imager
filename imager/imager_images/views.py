@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from profiles.models import ImagerProfile
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def library(request, pk):
-    pk = int(pk)
+
     return render(request,
                   'imager_images/library.html',
                   {
@@ -12,7 +15,9 @@ def library(request, pk):
                     'Profile': ImagerProfile.objects.get(pk=pk)
                   })
 
+@login_required
 def stream(request, pk):
+
     pk = int(pk)
     profile = ImagerProfile.objects.get(pk=pk)
     following = profile.following()
