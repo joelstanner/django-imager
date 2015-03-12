@@ -1,3 +1,19 @@
-<h1>{{Profile.user.username}}</h1>
-<h1>{{Profile_pics}}</h1>
-<h1>{{Following_pics}}</h1>
+{% load thumbnail %}
+
+<h1>{{Profile.user.username}}'s recent photos:</h1>
+{% for pic in Profile_pics %}
+    <p>uploaded on {{pic.date_uploaded}}</p>
+   {% thumbnail pic.photo "100x100" crop="center" as im %}
+    <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
+{% endfor %}
+<h1>Recently uploaded photos by Followed:</h1>
+{% for pic_set in Following_pics %}
+    {% for pic in pic_set %}
+        <p>uploaded on {{pic.date_uploaded}} by {{ pic.profile.user.username }}</p>
+        {% thumbnail pic.photo "100x100" crop="center" as im %}
+            <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+    {% endfor %}
+    <br/>
+{% endfor %}
