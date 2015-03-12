@@ -199,8 +199,6 @@ class ImagerProfileImageTests(TestCase):
             self.IP_bob.add_photo(self.alicephoto)
 
 
-
-
 class ProfilePageTests(TestCase):
 
     def setUp(self):
@@ -209,13 +207,14 @@ class ProfilePageTests(TestCase):
         self.IP_bob = self.bob.ImagerProfile
         self.IP_alice = self.alice.ImagerProfile
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
-                                            title="bob photo")
-        self.bobphoto.published = 'pb'
+                                            title="bob photo",
+                                            published='pb')
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
-                                              title="alice cool shot")
-        self.alicephoto.published = 'pb'
-        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile)
-        self.alicealbum.published = 'pb'
+                                              title="alice cool shot",
+                                              published='pb')
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice awesome",
+                                              published='pb')
 
         self.client = Client()
 
@@ -229,10 +228,16 @@ class ProfilePageTests(TestCase):
         self.assertTemplateUsed(response, 'profiles/imagerprofile_detail.html')
 
     def test_profile_page_displays_correct_profile_picture(self):
-        pass
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
+        self.assertIn('text.txt', response.content)
 
     def test_profile_page_lists_correct_number_of_photos(self):
-        pass
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2")
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
+        self.assertIn('2 Photos', response.content)
 
     def test_profile_page_lists_correct_number_of_albums(self):
         pass
