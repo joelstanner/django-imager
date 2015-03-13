@@ -3,7 +3,7 @@ from profiles.models import ImagerProfile
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
 @login_required
 def library(request, pk):
 
@@ -17,6 +17,9 @@ def library(request, pk):
 
 @login_required
 def stream(request, pk):
+
+    if request.user.id != int(pk):
+      return HttpResponse('Unauthorized', status=401)
 
     pk = int(pk)
     profile = ImagerProfile.objects.get(pk=pk)
