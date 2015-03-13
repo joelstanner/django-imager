@@ -210,6 +210,9 @@ class ProfilePageTests(TestCase):
         self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                             title="bob photo",
                                             published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob is awesome",
+                                            published='pb')
         self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
                                               title="alice cool shot",
                                               published='pb')
@@ -242,23 +245,35 @@ class ProfilePageTests(TestCase):
                                    str(ImagerProfile.objects.all()[0].pk))
         self.assertIn('text.txt', response.content)
 
-    def test_profile_page_lists_correct_number_of_photos(self):
+    def test_profile_page_lists_correct_number_of_items(self):
         self.client.login(username='Bob', password='password')
         self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                              title="bob photo2")
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+
         response = self.client.get('/profiles/' +
                                    str(ImagerProfile.objects.all()[0].pk))
         self.assertIn('2 Photos', response.content)
-
-    def test_profile_page_lists_correct_number_of_albums(self):
-        pass
-
-    def test_profile_page_lists_correct_number_of_followers(self):
-        pass
+        self.assertIn('1 Albums', response.content)
+        self.assertIn('1 Followers', response.content)
+        self.assertIn('following 1 People', response.content)
 
     def test_login_redirects_to_profile_page_upon_succesful_login(self):
-        pass
+        response = self.client.post(
+            '/accounts/login',
+            {'username': 'Bob', 'password': 'password'},
+            follow=True
+        )
+        self.assertIn(
+            (u'http://testserver/accounts/profile', 302),
+            response.redirect_chain
+        )
 
     def test_displayed_logged_in_as_name_is_link_to_profile_page(self):
-        pass
-
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
+        self.assertIn(
+            '<a href="/accounts/profile">Bob</a>', response.content
+        )
