@@ -7,16 +7,6 @@
     {% thumbnail profile.picture "100x100" crop="center" as im %}
         <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
     {% endthumbnail %}
-    <table style="width:100%">
-        <tr>
-            <td>Phone</td>
-            <td>{{profile.phone}}</td> 
-        </tr>
-        <tr>
-            <td>Birthday</td>
-            <td>{{profile.birthday}}</td> 
-        </tr>
-    </table>
     <h1>{{ profile.user.username }} has {{ profile.photo_set.count }} Photos:</h1>
     <ul>
         {% for photo in profile.show_all_photos %}
@@ -41,5 +31,16 @@
             <li>{{ follower.user.username }}</li>
         {% endfor %}
     </ul>
+    <h1>Personal Info</h1>
+    <table style="width:100%">
+        <tr>
+            <td>Phone</td>
+            <td>{{profile.phone}}</td> 
+        </tr>
+        <tr>
+            <td>Birthday</td>
+            <td>{{profile.birthday}}</td>
+        </tr>
+    </table>
 </div>
 {% endblock%}
