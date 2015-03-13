@@ -29,7 +29,7 @@
             <li>{{ album.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} is following {{ profile.followers.all.count }} People:</h1>
+    <h1>{{ profile.user.username }} is following {{ profile.following.all.count }} People:</h1>
     <ul>
         {% for follower in profile.following.all %}
             <li>{{ follower.user.username }}</li>

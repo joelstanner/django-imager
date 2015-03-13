@@ -16,14 +16,14 @@ def stream(request):
 
     profile = ImagerProfile.objects.get(pk=request.user.id)
     following = profile.following()
-    recent_pics = profile.photo_set.all()
+    recent_pics = profile.show_all_photos().order_by('date_uploaded')
     following_pics = []
     for followed in following:
-        following_pics.append(followed.show_photos().order_by('date_uploaded'))
+      following_pics.append(followed.show_photos().order_by('date_uploaded'))
     return render(request,
                   'imager_images/profilestream.html',
                   {
-                    'Profile': profile,
-                    'Profile_pics': recent_pics,
-                    'Following_pics': following_pics
+                    'profile': profile,
+                    'profile_pics': recent_pics,
+                    'following_pics': following_pics
                   })
