@@ -5,7 +5,7 @@
 <div class='container'>
     <h1>{{ profile.user.username }}</h1>
     {% thumbnail profile.picture "100x100" crop="center" as im %}
-        <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+        <img id="{{profile.picture.url}}" src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
        <p>Profile picture privacy setting: {{ profile.picture_priv|yesno:'Private,Public' }}</p>
     {% endthumbnail %}
     <h2>{{ profile.user.username }} has {{ profile.photo_set.count }} Photo{{ profile.photo_set.count|pluralize }}:</h2>

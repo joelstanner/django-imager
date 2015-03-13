@@ -4,7 +4,7 @@ from django.test import Client
 import factory
 from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
-from unittest import skip
+#from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -236,7 +236,6 @@ class ProfilePageTests(TestCase):
         response = self.client.get('/accounts/profile/')
         self.assertTemplateUsed(response, 'profile.html')
 
-    @skip('profile uses cached thumbnails, difficult to test')
     def test_profile_page_displays_correct_profile_picture(self):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/accounts/profile/')
@@ -319,8 +318,19 @@ class StreamPageTests(TestCase):
         response = self.client.get('/images/stream')
         self.assertIn("Bob's recent photos:", response.content)
         self.assertIn('Recently uploaded photos by Followed:', response.content)
-        self.assertIn('uploaded on March 13, 2015', response.content)
-        self.assertIn('uploaded on March 13, 2015 by Alice', response.content)
+        self.assertIn('by Alice', response.content)
+
+    def test_stream_does_not_show_other_users_private_photos(self):
+        self.client.login(username='Bob', password='password')
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2",)
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+        self.alicephoto.published = 'pv'
+        self.alicephoto.save()
+
+        response = self.client.get('/images/stream')
+        self.assertNotIn('by Alice', response.content)
 
 
 class LibraryPageTests(TestCase):
