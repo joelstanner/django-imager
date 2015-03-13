@@ -14,6 +14,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('username',)
 
     username = 'bob1'
+    password = factory.PostGenerationMethodCall('set_password', 'password')
 
 
 class PhotoFactory(factory.django.DjangoModelFactory):
@@ -218,21 +219,31 @@ class ProfilePageTests(TestCase):
 
         self.client = Client()
 
-    def test_profile_page(self):
-        response = self.client.get('/profiles/' + str(ImagerProfile.objects.all()[0].pk))
+    def test_profile_page_NON_AUTHENTICATED(self):
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
+        self.assertEqual(response.status_code, 302)  # REDIRECTS TO LOGIN
+
+    def test_profile_page_LOGGEDIN(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/profiles/' +
+                                   str(ImagerProfile.objects.all()[0].pk))
         self.assertEqual(response.status_code, 200)
 
     def test_profile_page_displays_correct_template(self):
+        self.client.login(username='Bob', password='password')
         response = self.client.get('/profiles/' +
                                    str(ImagerProfile.objects.all()[0].pk))
         self.assertTemplateUsed(response, 'profiles/imagerprofile_detail.html')
 
     def test_profile_page_displays_correct_profile_picture(self):
+        self.client.login(username='Bob', password='password')
         response = self.client.get('/profiles/' +
                                    str(ImagerProfile.objects.all()[0].pk))
         self.assertIn('text.txt', response.content)
 
     def test_profile_page_lists_correct_number_of_photos(self):
+        self.client.login(username='Bob', password='password')
         self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                              title="bob photo2")
         response = self.client.get('/profiles/' +

@@ -1,3 +1,7 @@
 TODO:
   
 Pluralize words in profile template
+¿Logout page redirects to the homepage?
+Permissions
+Login redirects to profile
+Navbar has seperators between link items
