@@ -4,7 +4,7 @@
     <h1>{{object.user.username}}</h1>
     <img src='{{ object.picture.url }}'>
     <table style="width:100%">
-    {% if profile_pk != user_pk %}
+    {% if object.user.pk != user.pk %}
         <h1>no match</h1>
     {% endif %}
         <tr>
