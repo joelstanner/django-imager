@@ -4,7 +4,9 @@
 
 <div class='container'>
     <h1>{{profile.user.username}}</h1>
-    <img src='{{ profile.picture.url }}'>
+    {% thumbnail profile.picture "100x100" crop="center" as im %}
+        <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+    {% endthumbnail %}
     <table style="width:100%">
         <tr>
             <td>Phone</td>
@@ -21,9 +23,9 @@
             <li>{{ photo.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} has {{ profile.show_albums.count }} Albums:</h1>
+    <h1>{{ profile.user.username }} has {{ profile.show_all_albums.count }} Albums:</h1>
     <ul>
-        {% for album in profile.show_albums.all %}
+        {% for album in profile.show_all_albums %}
             <li>{{ album.title }}</li>
         {% endfor %}
     </ul>

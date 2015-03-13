@@ -18,11 +18,8 @@ def library(request, pk):
 @login_required
 def stream(request, pk):
 
-    if request.user.id != int(pk):
-      return HttpResponse('Unauthorized', status=401)
-
     pk = int(pk)
-    profile = ImagerProfile.objects.get(pk=pk)
+    profile = ImagerProfile.objects.get(pk=request.user.id)
     following = profile.following()
     recent_pics = profile.photo_set.all()
     following_pics = []

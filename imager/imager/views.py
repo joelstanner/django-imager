@@ -17,4 +17,6 @@ def home(request):
             )
 
 def profile(request):
+    prof = ImagerProfile.objects.get(pk=request.user.id)
+    print prof.show_all_albums()
     return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})

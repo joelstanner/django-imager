@@ -87,12 +87,17 @@ class ImagerProfile(models.Model):
                                       Q(published='pv'))
 
     def show_all_photos(self):
-        return self.photo_set.all()
+        return self.photo_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self))
 
     def show_albums(self):
         return self.album_set.exclude(Q(profile__blocked=self) |
                                       Q(profile__blockedby_set=self) |
                                       Q(published='pv'))
+
+    def show_all_albums(self):
+        return self.album_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self))
 
     def is_active(self):
         return self.user.is_active
