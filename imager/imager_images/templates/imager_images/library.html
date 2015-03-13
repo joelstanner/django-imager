@@ -15,7 +15,11 @@
     <h1>{{Albums}}</h1>
     {% for album in Albums %}
        {% thumbnail album.cover "100x100" crop="center" as im %}
+       {% if not album.cover %}
+            <img src="/media/baby.jpg">
+        {% else %}
             <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endif %}
         {% endthumbnail %}
     {% endfor %}
 </div>

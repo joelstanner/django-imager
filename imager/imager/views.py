@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from imager_images.models import Photo
-
+from profiles.models import ImagerProfile
 
 def home(request):
     try:
@@ -15,3 +15,6 @@ def home(request):
             'index.html',
             {'random_photo': '/media/default_stock_photo_640_360.jpg'}
             )
+
+def profile(request):
+    return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})
