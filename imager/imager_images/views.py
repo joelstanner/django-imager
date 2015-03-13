@@ -16,9 +16,8 @@ def library(request, pk):
                   })
 
 @login_required
-def stream(request, pk):
+def stream(request):
 
-    pk = int(pk)
     profile = ImagerProfile.objects.get(pk=request.user.id)
     following = profile.following()
     recent_pics = profile.photo_set.all()

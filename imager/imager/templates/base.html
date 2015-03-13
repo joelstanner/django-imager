@@ -24,7 +24,7 @@
             {% if user.is_authenticated %}
               {% trans "Logged in" %}: <a href="/accounts/profile">{{ user.username }}</a> 
               <a href='/images/library/{{user.id}}'>Library</a>
-              <a href='/images/stream/{{user.id}}'>Stream</a>
+              <a href='/images/stream'>Stream</a>
               (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
               <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
             {% else %}
