@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from imager_images.models import Photo
 from profiles.models import ImagerProfile
+from django.views.generic.edit import CreateView
 
 
 def home(request):
@@ -26,3 +27,8 @@ def profile(request):
     prof = ImagerProfile.objects.get(pk=request.user.id)
     print prof.show_all_albums()
     return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})
+
+
+class PhotoCreate(CreateView):
+    model = Photo
+    fields = ['title', 'description', 'published', 'photo', 'profile']
