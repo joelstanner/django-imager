@@ -297,4 +297,27 @@ class StreamPageTests(TestCase):
 
     def test_stream_page_NON_AUTHENTICATED(self):
         response = self.client.get('/images/stream/')
-        self.assertEqual(response.status_code, 404)  # REDIRECTS TO LOGIN
+        self.assertEqual(response.status_code, 404)
+
+    def test_stream_page_LOGGEDIN(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/stream/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_stream_page_displays_correct_template(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/stream/')
+        self.assertTemplateUsed(response, 'profilestream.html')
+
+    def test_stream_page_has_correct_subject_headers(self):
+        self.client.login(username='Bob', password='password')
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2",)
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+
+        response = self.client.get('/images/stream/')
+        self.assertIn("Bob's recent photos:", response.content)
+        self.assertIn('Recently uploaded photos by Followed:', response.content)
+        self.assertIn('uploaded on March 13, 2015', response.content)
+        self.assertIn('uploaded by Alice on March 13, 2015', response.content)
