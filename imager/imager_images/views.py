@@ -5,15 +5,11 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def library(request, pk):
+def library(request):
 
     return render(request,
                   'imager_images/library.html',
-                  {
-                    'Photos': ImagerProfile.objects.get(pk=pk).show_photos(),
-                    'Albums': ImagerProfile.objects.get(pk=pk).show_albums(),
-                    'Profile': ImagerProfile.objects.get(pk=pk)
-                  })
+                  {'profile': ImagerProfile.objects.get(pk=request.user.id)})
 
 @login_required
 def stream(request):

@@ -4,16 +4,16 @@
 <div class='container'>
 {% load thumbnail %}
 
-    <h1>{{Profile.user.username}}</h1>
+    <h1>{{profile.user.username}}</h1>
 
-    <h1>{{Photos}}</h1>
-    {% for photo in Photos %}
+    <h1>{{profile.show_all_photos}}</h1>
+    {% for photo in profile.show_all_photos %}
        {% thumbnail photo.photo "100x100" crop="center" as im %}
             <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
         {% endthumbnail %}
     {% endfor %}
-    <h1>{{Albums}}</h1>
-    {% for album in Albums %}
+    <h1>{{profile.show_all_albums}}</h1>
+    {% for album in profile.show_all_albums %}
        {% thumbnail album.cover "100x100" crop="center" as im %}
        {% if not album.cover %}
             <img src="/media/baby.jpg">
