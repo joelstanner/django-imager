@@ -7,25 +7,25 @@
     {% thumbnail profile.picture "100x100" crop="center" as im %}
         <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
     {% endthumbnail %}
-    <h1>{{ profile.user.username }} has {{ profile.photo_set.count }} Photos:</h1>
+    <h1>{{ profile.user.username }} has {{ profile.photo_set.count }} Photo{{ profile.photo_set.count|pluralize }}:</h1>
     <ul>
         {% for photo in profile.show_all_photos %}
             <li>{{ photo.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} has {{ profile.show_all_albums.count }} Albums:</h1>
+    <h1>{{ profile.user.username }} has {{ profile.show_all_albums.count }} Album{{ profile.show_all_albums.count|pluralize }}:</h1>
     <ul>
         {% for album in profile.show_all_albums %}
             <li>{{ album.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} is following {{ profile.following.all.count }} People:</h1>
+    <h1>{{ profile.user.username }} is following {{ profile.following.all.count }} {{ profile.following.all.count|pluralize:"Person,People" }}:</h1>
     <ul>
         {% for follower in profile.following.all %}
             <li>{{ follower.user.username }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} has {{ profile.followers.all.count }} Followers:</h1>
+    <h1>{{ profile.user.username }} has {{ profile.followers.all.count }} Follower{{ profile.followers.all.count|pluralize }}:</h1>
     <ul>
         {% for follower in profile.followers.all %}
             <li>{{ follower.user.username }}</li>
