@@ -251,9 +251,9 @@ class ProfilePageTests(TestCase):
 
         response = self.client.get('/accounts/profile/')
         self.assertIn('2 Photos', response.content)
-        self.assertIn('1 Albums', response.content)
-        self.assertIn('1 Followers', response.content)
-        self.assertIn('following 1 People', response.content)
+        self.assertIn('1 Album', response.content)
+        self.assertIn('1 Follower', response.content)
+        self.assertIn('following 1 Person', response.content)
 
     def test_login_redirects_to_profile_page_upon_succesful_login(self):
         response = self.client.post(
@@ -270,5 +270,31 @@ class ProfilePageTests(TestCase):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/accounts/profile/')
         self.assertIn(
-            '<a href="/accounts/profile">Bob</a>', response.content
+            'href="/accounts/profile">Bob</a>', response.content
         )
+
+
+class StreamPageTests(TestCase):
+    def setUp(self):
+        self.bob = UserFactory.create(username='Bob')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.IP_alice = self.alice.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo",
+                                            published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob is awesome",
+                                            published='pb')
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot",
+                                              published='pb')
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice awesome",
+                                              published='pb')
+
+        self.client = Client()
+
+    def test_stream_page_NON_AUTHENTICATED(self):
+        response = self.client.get('/images/stream/')
+        self.assertEqual(response.status_code, 404)  # REDIRECTS TO LOGIN
