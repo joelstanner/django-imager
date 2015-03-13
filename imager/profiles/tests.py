@@ -223,26 +223,22 @@ class ProfilePageTests(TestCase):
         self.client = Client()
 
     def test_profile_page_NON_AUTHENTICATED(self):
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profile/')
         self.assertEqual(response.status_code, 302)  # REDIRECTS TO LOGIN
 
     def test_profile_page_LOGGEDIN(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profile/')
         self.assertEqual(response.status_code, 200)
 
     def test_profile_page_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profile/')
         self.assertTemplateUsed(response, 'profiles/imagerprofile_detail.html')
 
     def test_profile_page_displays_correct_profile_picture(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profile/')
         self.assertIn('text.txt', response.content)
 
     def test_profile_page_lists_correct_number_of_items(self):
@@ -252,8 +248,7 @@ class ProfilePageTests(TestCase):
         self.IP_alice.follow(self.IP_bob)
         self.IP_bob.follow(self.IP_alice)
 
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profile/')
         self.assertIn('2 Photos', response.content)
         self.assertIn('1 Albums', response.content)
         self.assertIn('1 Followers', response.content)
@@ -272,8 +267,7 @@ class ProfilePageTests(TestCase):
 
     def test_displayed_logged_in_as_name_is_link_to_profile_page(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/profiles/' +
-                                   str(ImagerProfile.objects.all()[0].pk))
+        response = self.client.get('/accounts/profiles/')
         self.assertIn(
             '<a href="/accounts/profile">Bob</a>', response.content
         )
