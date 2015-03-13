@@ -344,29 +344,28 @@ class LibraryPageTests(TestCase):
 
         self.client = Client()
 
-    def test_stream_page_NON_AUTHENTICATED(self):
-        response = self.client.get('/images/stream/')
+    def test_library_page_NON_AUTHENTICATED(self):
+        response = self.client.get('/images/library/')
         self.assertEqual(response.status_code, 404)
 
-    def test_stream_page_LOGGEDIN(self):
+    def test_library_page_LOGGEDIN(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/images/stream')
+        response = self.client.get('/images/library')
         self.assertEqual(response.status_code, 200)
 
-    def test_stream_page_displays_correct_template(self):
+    def test_library_page_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/images/stream')
-        self.assertTemplateUsed(response, 'imager_images/profilestream.html')
+        response = self.client.get('/images/library')
+        self.assertTemplateUsed(response, 'imager_images/library.html')
 
-    def test_stream_page_has_correct_subject_headers(self):
+    def test_library_page_has_correct_subject_headers(self):
         self.client.login(username='Bob', password='password')
         self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
                                              title="bob photo2",)
         self.IP_alice.follow(self.IP_bob)
         self.IP_bob.follow(self.IP_alice)
 
-        response = self.client.get('/images/stream')
-        self.assertIn("Bob's recent photos:", response.content)
-        self.assertIn('Recently uploaded photos by Followed:', response.content)
-        self.assertIn('uploaded on March 13, 2015', response.content)
-        self.assertIn('uploaded on March 13, 2015 by Alice', response.content)
+        response = self.client.get('/images/library')
+        self.assertIn("Bob's Library", response.content)
+        self.assertIn('Photos:', response.content)
+        self.assertIn('Albums:', response.content)
