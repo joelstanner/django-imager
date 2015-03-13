@@ -3,43 +3,51 @@
 {% load thumbnail %}
 
 <div class='container'>
-    <h1>{{profile.user.username}}</h1>
+    <h1>{{ profile.user.username }}</h1>
     {% thumbnail profile.picture "100x100" crop="center" as im %}
         <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+       <p>Profile picture privacy setting: {{ profile.picture_priv|yesno:'Private,Public' }}</p>
     {% endthumbnail %}
-    <h1>{{ profile.user.username }} has {{ profile.photo_set.count }} Photo{{ profile.photo_set.count|pluralize }}:</h1>
+    <h2>{{ profile.user.username }} has {{ profile.photo_set.count }} Photo{{ profile.photo_set.count|pluralize }}:</h2>
     <ul>
         {% for photo in profile.show_all_photos %}
             <li>{{ photo.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} has {{ profile.show_all_albums.count }} Album{{ profile.show_all_albums.count|pluralize }}:</h1>
+    <h2>{{ profile.user.username }} has {{ profile.show_all_albums.count }} Album{{ profile.show_all_albums.count|pluralize }}:</h2>
     <ul>
         {% for album in profile.show_all_albums %}
             <li>{{ album.title }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} is following {{ profile.following.all.count }} {{ profile.following.all.count|pluralize:"Person,People" }}:</h1>
+    <h2>{{ profile.user.username }} is following {{ profile.following.all.count }} {{ profile.following.all.count|pluralize:"Person,People" }}:</h2>
     <ul>
         {% for follower in profile.following.all %}
             <li>{{ follower.user.username }}</li>
         {% endfor %}
     </ul>
-    <h1>{{ profile.user.username }} has {{ profile.followers.all.count }} Follower{{ profile.followers.all.count|pluralize }}:</h1>
+    <h2>{{ profile.user.username }} has {{ profile.followers.all.count }} Follower{{ profile.followers.all.count|pluralize }}:</h2>
     <ul>
         {% for follower in profile.followers.all %}
             <li>{{ follower.user.username }}</li>
         {% endfor %}
     </ul>
-    <h1>Personal Info</h1>
-    <table style="width:100%">
+    <h1>Personal Info:</h1>
+    <table class="table table-striped"">
         <tr>
             <td>Phone</td>
-            <td>{{profile.phone}}</td> 
+            <td>{{profile.phone}}</td>
+            <td>{{profile.phone_priv|yesno:'Private,Public'}}</td>
         </tr>
         <tr>
             <td>Birthday</td>
             <td>{{profile.birthday}}</td>
+            <td>{{profile.birthday_priv|yesno:'Private,Public'}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{profile.user.email}}</td>
+            <td>{{profile.email_priv|yesno:'Private,Public'}}</td>
         </tr>
     </table>
 </div>
