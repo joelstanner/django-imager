@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
@@ -108,6 +108,15 @@ class ImagerProfile(models.Model):
     @classmethod
     def active(cls):
         return ImagerProfile.objects.exclude(user__is_active=False)
+
+
+@python_2_unicode_compatible
+class Default_Group(Group):
+    name = 'Default Group'
+    permissions = []
+
+    def __str__(self):
+        return self.group.name
 
 
 def create_user_profile(sender, instance, created, **kwargs):

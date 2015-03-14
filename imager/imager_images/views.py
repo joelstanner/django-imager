@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from profiles.models import ImagerProfile
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 
