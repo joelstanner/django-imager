@@ -81,9 +81,9 @@ class TestAlbum(TestCase):
         self.bobalbum.add_photo(self.bobphoto)
         self.assertIn(self.bobphoto, self.bobalbum.show_photos())
 
-    def test_album_designate_cover(self):
+    def test_album_designate_cover_photo(self):
         self.freddyalbum.designate_cover(self.bobphoto)
-        self.assertEqual(self.freddyalbum.cover, self.bobphoto)
+        self.assertEqual(self.freddyalbum.cover_photo, self.bobphoto)
 
     def test_album_show_photos(self):
         self.bobalbum.add_photo(self.bobphoto)
