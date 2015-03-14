@@ -116,7 +116,7 @@ class Default_Group(Group):
     permissions = []
 
     def __str__(self):
-        return self.group.name
+        return self.name
 
 
 def create_user_profile(sender, instance, created, **kwargs):
