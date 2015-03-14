@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from imager_images.models import Photo
+from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 from django.views.generic.edit import CreateView
 
@@ -32,3 +32,8 @@ def profile(request):
 class PhotoCreate(CreateView):
     model = Photo
     fields = ['title', 'description', 'published', 'photo', 'profile']
+
+
+class AlbumCreate(CreateView):
+    model = Album
+    fields = ['title', 'description', 'published', 'profile']
