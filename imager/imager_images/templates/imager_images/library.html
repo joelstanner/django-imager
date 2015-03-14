@@ -7,12 +7,14 @@
     <h1>{{profile.user.username}}'s Library</h1>
 
     <h1>Photos:</h1>
+    <a href="/add_photo">add photo</a>
     {% for photo in profile.show_all_photos %}
        {% thumbnail photo.photo "100x100" crop="center" as im %}
             <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
         {% endthumbnail %}
     {% endfor %}
     <h1>Albums:</h1>
+    <a href="/add_album">add album</a>
     {% for album in profile.show_all_albums %}
         {% if not album.cover %}
             <img src="/media/baby.jpg" width='100' height='100'>

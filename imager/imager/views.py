@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 from django.views.generic.edit import CreateView
+from forms import PhotoForm
+from profiles.models import ImagerProfile
 
 
 def home(request):
@@ -21,19 +23,25 @@ def home(request):
 
 def profile(request):
     if not request.user.is_authenticated():
-        print 'thing'
         return redirect('/accounts/login/')
 
     prof = ImagerProfile.objects.get(pk=request.user.id)
-    print prof.show_all_albums()
     return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})
 
 
 class PhotoCreate(CreateView):
     model = Photo
-    fields = ['title', 'description', 'published', 'photo', 'profile']
+    fields = ['title', 'description', 'photo']
+
+    def form_valid(self, form):
+        form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
+        return super(PhotoCreate, self).form_valid(form)
 
 
 class AlbumCreate(CreateView):
     model = Album
-    fields = ['title', 'description', 'published', 'profile']
+    fields = ['title', 'description']
+
+    def form_valid(self, form):
+        form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
+        return super(AlbumCreate, self).form_valid(form)
