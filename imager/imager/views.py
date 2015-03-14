@@ -25,7 +25,8 @@ def profile(request):
     if not request.user.is_authenticated():
         return redirect('/accounts/login/')
 
-    return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})
+    return render(request, 'profile.html',
+                  {'profile': ImagerProfile.objects.get(pk=request.user.id)})
 
 
 class ProfileUpdate(UpdateView):
@@ -48,13 +49,21 @@ class PhotoCreate(CreateView):
     fields = ['title', 'description', 'photo', 'published']
 
     def form_valid(self, form):
-        form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
+        form.instance.profile = ImagerProfile.objects.get(
+            pk=self.request.user.id)
         return super(PhotoCreate, self).form_valid(form)
 
 
 class PhotoUpdate(UpdateView):
     model = Photo
     fields = ['title', 'description', 'published']
+
+    def dispatch(self, request, *args, **kwargs):
+        photo_profile = Photo.objects.get(id=int(self.kwargs['pk'])).profile
+        user_profile = ImagerProfile.objects.get(user=self.request.user)
+        if photo_profile != user_profile:
+            return redirect('/accounts/login/')
+        return super(PhotoUpdate, self).dispatch(request, *args, **kwargs)
 
 
 class PhotoDelete(DeleteView):
@@ -71,7 +80,8 @@ class AlbumCreate(CreateView):
         return initial
 
     def form_valid(self, form):
-        form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
+        form.instance.profile = ImagerProfile.objects.get(
+            pk=self.request.user.id)
         return super(AlbumCreate, self).form_valid(form)
 
 
@@ -84,7 +94,13 @@ class AlbumUpdate(UpdateView):
         initial['user'] = self.request.user
         return initial
 
+    def dispatch(self, request, *args, **kwargs):
+        album_profile = Album.objects.get(id=int(self.kwargs['pk'])).profile
+        user_profile = ImagerProfile.objects.get(user=self.request.user)
+        if album_profile != user_profile:
+            return redirect('/accounts/login/')
+        return super(AlbumUpdate, self).dispatch(request, *args, **kwargs)
+
 
 class AlbumDelete(DeleteView):
     model = Album
-
