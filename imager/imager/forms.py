@@ -40,11 +40,15 @@ class ProfileForm(ModelForm):
             user=kwargs['instance'].user)
         self.fields['blocked'].queryset = ImagerProfile.objects.exclude(
             user=kwargs['instance'].user)
+        self.fields['first_name'].value = kwargs['instance'].user.first_name
 
     def save(self, *args, **kwargs):
         obj = super(ProfileForm, self).save(*args, **kwargs)
-        obj.user.first_name = self.data['first_name']
-        obj.user.last_name = self.data['last_name']
-        obj.user.email = self.data['email']
+        print obj.user.first_name
+        obj.user.first_name = self.cleaned_data['first_name']
+        obj.user.last_name = self.cleaned_data['last_name']
+        obj.user.email = self.cleaned_data['email']
         obj.user.save()
+        print obj.user.first_name
+        # import pdb; pdb.set_trace()
         return obj

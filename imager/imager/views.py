@@ -33,15 +33,20 @@ class ProfileUpdate(UpdateView):
     model = ImagerProfile
     form_class = ProfileForm
 
+    def get_form(self, form_class):
+        form = super(ProfileUpdate, self).get_form(form_class)
+        form.fields['first_name'].initial = self.request.user.first_name
+        return form
+
     def dispatch(self, request, *args, **kwargs):
         if int(self.kwargs['pk']) != self.request.user.id:
             return redirect('/accounts/login/')
         return super(ProfileUpdate, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
-        initial = super(ProfileUpdate, self).get_initial()
-        initial['user'] = self.request.user
-        initial['profile'] = ImagerProfile.objects.get(user=self.request.user)
+        return {'first_name': self.request.user.first_name,
+                'last_name': self.request.user.last_name,
+                'email': self.request.user.email}
 
 
 class PhotoCreate(CreateView):
