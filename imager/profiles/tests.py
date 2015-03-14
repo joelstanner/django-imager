@@ -375,6 +375,15 @@ class StreamPageTests(TestCase):
         response = self.client.get('/images/stream')
         self.assertNotIn('by Alice', response.content)
 
+    def test_stream_page_does_not_show_blocked_users(self):
+        self.client.login(username='Bob', password='password')
+        self.IP_bob.follow(self.IP_alice)
+        response = self.client.get('/images/stream')
+        self.assertIn('by Alice', response.content)
+
+        self.IP_bob.block(self.IP_alice)
+        self.assertNotIn('by Alice', response.content)
+
 
 class LibraryPageTests(TestCase):
     def setUp(self):
