@@ -4,7 +4,7 @@ from django.test import Client
 import factory
 from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
-from unittest import skip
+#from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -236,7 +236,6 @@ class ProfilePageTests(TestCase):
         response = self.client.get('/accounts/profile/')
         self.assertTemplateUsed(response, 'profile.html')
 
-    @skip('profile uses cached thumbnails, difficult to test')
     def test_profile_page_displays_correct_profile_picture(self):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/accounts/profile/')
@@ -251,9 +250,9 @@ class ProfilePageTests(TestCase):
 
         response = self.client.get('/accounts/profile/')
         self.assertIn('2 Photos', response.content)
-        self.assertIn('1 Albums', response.content)
-        self.assertIn('1 Followers', response.content)
-        self.assertIn('following 1 People', response.content)
+        self.assertIn('1 Album', response.content)
+        self.assertIn('1 Follower', response.content)
+        self.assertIn('following 1 Person', response.content)
 
     def test_login_redirects_to_profile_page_upon_succesful_login(self):
         response = self.client.post(
@@ -270,5 +269,113 @@ class ProfilePageTests(TestCase):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/accounts/profile/')
         self.assertIn(
-            '<a href="/accounts/profile">Bob</a>', response.content
+            'href="/accounts/profile">Bob</a>', response.content
         )
+
+
+class StreamPageTests(TestCase):
+    def setUp(self):
+        self.bob = UserFactory.create(username='Bob')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.IP_alice = self.alice.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo",
+                                            published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob is awesome",
+                                            published='pb')
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot",
+                                              published='pb')
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice awesome",
+                                              published='pb')
+
+        self.client = Client()
+
+    def test_stream_page_NON_AUTHENTICATED(self):
+        response = self.client.get('/images/stream/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_stream_page_LOGGEDIN(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/stream')
+        self.assertEqual(response.status_code, 200)
+
+    def test_stream_page_displays_correct_template(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/stream')
+        self.assertTemplateUsed(response, 'imager_images/profilestream.html')
+
+    def test_stream_page_has_correct_subject_headers(self):
+        self.client.login(username='Bob', password='password')
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2",)
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+
+        response = self.client.get('/images/stream')
+        self.assertIn("Bob's recent photos:", response.content)
+        self.assertIn('Recently uploaded photos by Followed:', response.content)
+        self.assertIn('by Alice', response.content)
+
+    def test_stream_does_not_show_other_users_private_photos(self):
+        self.client.login(username='Bob', password='password')
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2",)
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+        self.alicephoto.published = 'pv'
+        self.alicephoto.save()
+
+        response = self.client.get('/images/stream')
+        self.assertNotIn('by Alice', response.content)
+
+
+class LibraryPageTests(TestCase):
+    def setUp(self):
+        self.bob = UserFactory.create(username='Bob')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.IP_alice = self.alice.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo",
+                                            published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob is awesome",
+                                            published='pb')
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot",
+                                              published='pb')
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice awesome",
+                                              published='pb')
+
+        self.client = Client()
+
+    def test_library_page_NON_AUTHENTICATED(self):
+        response = self.client.get('/images/library/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_library_page_LOGGEDIN(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/library')
+        self.assertEqual(response.status_code, 200)
+
+    def test_library_page_displays_correct_template(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/images/library')
+        self.assertTemplateUsed(response, 'imager_images/library.html')
+
+    def test_library_page_has_correct_subject_headers(self):
+        self.client.login(username='Bob', password='password')
+        self.bobphoto2 = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                             title="bob photo2",)
+        self.IP_alice.follow(self.IP_bob)
+        self.IP_bob.follow(self.IP_alice)
+
+        response = self.client.get('/images/library')
+        self.assertIn("Bob's Library", response.content)
+        self.assertIn('Photos:', response.content)
+        self.assertIn('Albums:', response.content)

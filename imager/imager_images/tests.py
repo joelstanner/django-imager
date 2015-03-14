@@ -85,7 +85,8 @@ class TestAlbum(TestCase):
         self.freddyalbum.designate_cover(self.bobphoto)
         self.assertEqual(self.freddyalbum.cover, self.bobphoto.photo)
 
-    def test_album_photos_only_from_album_user(self):
+    def test_album_show_photos(self):
+        self.bobalbum.add_photo(self.bobphoto)
         for photo in self.bobalbum.show_photos():
             self.assertEqual(photo.profile.user, self.bob)
 
