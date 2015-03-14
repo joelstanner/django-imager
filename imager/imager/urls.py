@@ -18,4 +18,8 @@ urlpatterns = patterns('',
         template_name="albums_form.html",
         success_url='/images/library'),
         name='add_album'),
+    url(r'^update_album/(?P<pk>\d+)/$', views.AlbumUpdate.as_view(
+        template_name="update_album.html",
+        success_url='/images/library'),
+        name='update_album'),  
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
