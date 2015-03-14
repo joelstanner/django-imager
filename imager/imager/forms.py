@@ -7,6 +7,7 @@ class PhotoForm(ModelForm):
 
     class Meta:
         model = Photo
+        exclude = []
 
 
 class AlbumForm(ModelForm):
@@ -26,3 +27,4 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = ImagerProfile
+        exclude = []
