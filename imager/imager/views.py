@@ -34,7 +34,7 @@ class ProfileUpdate(UpdateView):
 
 class PhotoCreate(CreateView):
     model = Photo
-    fields = ['title', 'description', 'photo']
+    fields = ['title', 'description', 'photo', 'published']
 
     def form_valid(self, form):
         form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
@@ -43,7 +43,7 @@ class PhotoCreate(CreateView):
 
 class PhotoUpdate(UpdateView):
     model = Photo
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'published']
 
 
 class PhotoDelete(DeleteView):
