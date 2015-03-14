@@ -87,7 +87,7 @@ class Photo(models.Model):
                                    blank=True,
                                    null=True)
 
-    photo = models.ImageField(blank=True, null=True)
+    photo = models.ImageField(blank=False, null=False)
 
     title = models.CharField(max_length=256, default='No Title')
     description = models.TextField(default='No Description')
