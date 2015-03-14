@@ -112,3 +112,9 @@ SITE_ID = 1
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True  # auto-login upon registering
 LOGOUT_URL = '/'
+
+# FOR FASTER TESTS --- REMOVE FOR PRODUCTION
+if DEBUG:
+    PASSWORD_HASHERS = (
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    )

@@ -305,7 +305,6 @@ class UpdateProfilePageTests(TestCase):
     @skip('this is broken')
     def test_profile_page_items_update_correctly(self):
         self.client.login(username='bob1', password='password')
-        print self.bob.pk
         response = self.client.post('/update_profile/' + str(self.bob.pk) + '/',
                                     {'birthday': '1970-01-02',
                                      'phone': '666-666-6666',
@@ -315,6 +314,13 @@ class UpdateProfilePageTests(TestCase):
         self.assertEqual(self.IP_bob.birthday, '1970-01-02')
         self.assertEqual(self.IP_bob.phone, '666-666-6666')
 
+    def test_user_cannot_update_someone_elses_profile(self):
+        self.client.login(username='bob1', password='password')
+        response = self.client.get('/update_profile/' + str(self.alice.pk) + '/',
+                                   follow=True)
+
+        self.assertEqual(response.redirect_chain,
+                            [('http://testserver/accounts/login/', 302)])
 
 class StreamPageTests(TestCase):
     def setUp(self):
@@ -382,6 +388,8 @@ class StreamPageTests(TestCase):
         self.assertIn('by Alice', response.content)
 
         self.IP_bob.block(self.IP_alice)
+        self.IP_bob.save()
+        response = self.client.get('/images/stream')
         self.assertNotIn('by Alice', response.content)
 
 
