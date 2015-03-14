@@ -49,10 +49,10 @@ class ImagerProfile(models.Model):
         self.blocked.remove(IProfile)
 
     def following(self):
-        return self.follows.exclude(blocked=self)
+        return self.follows.exclude(blocked=self).exclude(blockedby_set=self)
 
     def followers(self):
-        return self.followers_set.exclude(blocked=self)
+        return self.followers_set.exclude(blocked=self).exclude(blockedby_set=self)
 
     def follow(self, IProfile):
         if IProfile in self.blockedby_set.all():
