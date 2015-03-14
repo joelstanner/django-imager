@@ -32,10 +32,10 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = ImagerProfile
+        exclude = ['user']
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
-        profile = ImagerProfile.objects.get(user=self.initial['user'])
 
     def save(self, *args, **kwargs):
         obj = super(ProfileForm, self).save(*args, **kwargs)

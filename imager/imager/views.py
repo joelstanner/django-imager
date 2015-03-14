@@ -37,13 +37,6 @@ class ProfileUpdate(UpdateView):
         initial['user'] = self.request.user
         initial['profile'] = ImagerProfile.objects.get(user=self.request.user)
 
-    def form_valid(self, form):
-        self.request.user.first_name = form.fields['first_name']
-        self.request.user.last_name = form.fields['last_name']
-        self.request.user.email = form.fields['email']
-
-        return super(ProfileUpdate, self).form_valid(form)
-
 
 class PhotoCreate(CreateView):
     model = Photo
