@@ -66,7 +66,12 @@ class AlbumCreate(CreateView):
 
 class AlbumUpdate(UpdateView):
     model = Album
-    fields = ['title', 'description', 'photos', 'cover_photo']
+    form_class = AlbumForm
+
+    def get_initial(self):
+        initial = super(AlbumUpdate, self).get_initial()
+        initial['user'] = self.request.user
+        return initial
 
 
 class AlbumDelete(DeleteView):
