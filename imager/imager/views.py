@@ -50,3 +50,7 @@ class AlbumCreate(CreateView):
 class AlbumUpdate(UpdateView):
     model = Album
     fields = ['title', 'description', 'photos', 'cover_photo']
+
+class PhotoUpdate(UpdateView):
+    model = Photo
+    fields = ['title', 'description']

@@ -21,5 +21,9 @@ urlpatterns = patterns('',
     url(r'^update_album/(?P<pk>\d+)/$', views.AlbumUpdate.as_view(
         template_name="update_album.html",
         success_url='/images/library'),
-        name='update_album'),  
+        name='update_album'), 
+    url(r'^update_photo/(?P<pk>\d+)/$', views.PhotoUpdate.as_view(
+        template_name="update_photo.html",
+        success_url='/images/library'),
+        name='update_photo'),  
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
