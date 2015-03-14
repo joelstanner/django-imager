@@ -3,6 +3,7 @@ from django.contrib import admin
 import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = patterns('',
     url(r'^$', views.home, name='home_page'),
@@ -26,4 +27,8 @@ urlpatterns = patterns('',
         template_name="update_photo.html",
         success_url='/images/library'),
         name='update_photo'),  
+    url(r'^delete_photo/(?P<pk>\d+)/$', views.PhotoDelete.as_view(
+        template_name="delete_photo.html",
+        success_url = '/images/library'),
+        name='delete_photo'), 
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from forms import PhotoForm, AlbumForm
 from profiles.models import ImagerProfile
 
@@ -37,6 +37,15 @@ class PhotoCreate(CreateView):
         return super(PhotoCreate, self).form_valid(form)
 
 
+class PhotoUpdate(UpdateView):
+    model = Photo
+    fields = ['title', 'description']
+
+
+class PhotoDelete(DeleteView):
+    model = Photo
+
+
 class AlbumCreate(CreateView):
     model = Album
     fields = ['title', 'description']
@@ -51,6 +60,4 @@ class AlbumUpdate(UpdateView):
     model = Album
     fields = ['title', 'description', 'photos', 'cover_photo']
 
-class PhotoUpdate(UpdateView):
-    model = Photo
-    fields = ['title', 'description']
+
