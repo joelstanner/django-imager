@@ -1,6 +1,5 @@
 from django import forms
 from django.forms import ModelForm
-from django.db import models
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 
@@ -22,7 +21,8 @@ class AlbumForm(ModelForm):
         super(AlbumForm, self).__init__(*args, **kwargs)
         profile = ImagerProfile.objects.get(user=self.initial['user'])
         self.fields['photos'].queryset = Photo.objects.filter(profile=profile)
-        self.fields['cover_photo'].queryset = Photo.objects.filter(profile=profile)
+        self.fields['cover_photo'].queryset = Photo.objects.filter(
+            profile=profile)
 
 
 class ProfileForm(ModelForm):
@@ -32,10 +32,14 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = ImagerProfile
-        exclude = ['user']
+        exclude =['user']
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['follows'].queryset = ImagerProfile.objects.exclude(
+            user=kwargs['instance'].user)
+        self.fields['blocked'].queryset = ImagerProfile.objects.exclude(
+            user=kwargs['instance'].user)
 
     def save(self, *args, **kwargs):
         obj = super(ProfileForm, self).save(*args, **kwargs)
