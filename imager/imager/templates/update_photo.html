@@ -1,6 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Update" />
 </form>
-<a href="/delete_photo/{{object.id}}"><button>Delete Photo</button></a>
+<a href="/delete_photo/{{object.id}}"><button class="btn btn-warning">Delete Photo</button></a>
+</div>
+{% endblock %}
