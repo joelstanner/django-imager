@@ -13,3 +13,7 @@ class AlbumForm(ModelForm):
 
     class Meta:
         model = Album
+
+    def __init__(self, *args, **kwargs):
+        print "hello"
+        super(AlbumForm, self).__init__(args, kwargs)

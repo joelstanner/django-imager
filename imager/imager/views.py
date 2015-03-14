@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 from django.views.generic.edit import CreateView, UpdateView
-from forms import PhotoForm
+from forms import PhotoForm, AlbumForm
 from profiles.models import ImagerProfile
 
 
@@ -40,6 +40,7 @@ class PhotoCreate(CreateView):
 class AlbumCreate(CreateView):
     model = Album
     fields = ['title', 'description']
+    form_model = AlbumForm
 
     def form_valid(self, form):
         form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
