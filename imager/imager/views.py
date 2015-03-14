@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from forms import PhotoForm, AlbumForm
+from forms import PhotoForm, AlbumForm, ProfileForm
 from profiles.models import ImagerProfile
 
 
@@ -30,6 +30,19 @@ def profile(request):
 
 class ProfileUpdate(UpdateView):
     model = ImagerProfile
+    form_class = ProfileForm
+
+    def get_initial(self):
+        initial = super(ProfileUpdate, self).get_initial()
+        initial['user'] = self.request.user
+        initial['profile'] = ImagerProfile.objects.get(user=self.request.user)
+
+    def form_valid(self, form):
+        self.request.user.first_name = form.fields['first_name']
+        self.request.user.last_name = form.fields['last_name']
+        self.request.user.email = form.fields['email']
+
+        return super(ProfileUpdate, self).form_valid(form)
 
 
 class PhotoCreate(CreateView):
