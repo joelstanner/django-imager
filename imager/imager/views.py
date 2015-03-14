@@ -52,8 +52,12 @@ class PhotoDelete(DeleteView):
 
 class AlbumCreate(CreateView):
     model = Album
-    fields = ['title', 'description']
-    form_model = AlbumForm
+    form_class = AlbumForm
+
+    def get_initial(self):
+        initial = super(AlbumCreate, self).get_initial()
+        initial['user'] = self.request.user
+        return initial
 
     def form_valid(self, form):
         form.instance.profile = ImagerProfile.objects.get(pk=self.request.user.id)
