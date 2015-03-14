@@ -61,3 +61,6 @@ class AlbumUpdate(UpdateView):
     fields = ['title', 'description', 'photos', 'cover_photo']
 
 
+class AlbumDelete(DeleteView):
+    model = Album
+
