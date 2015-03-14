@@ -4,6 +4,7 @@
 
 <div class='container'>
     <h1>{{object.user.username}}</h1>
+    <a href="/update_profile/{{ object.id }}"><button>Edit Profile</button></a>
     <img src='{{ object.picture.url }}'>
     <table style="width:100%">
         <tr>
@@ -40,4 +41,5 @@
         {% endfor %}
     </ul>
 </div>
+
 {% endblock%}

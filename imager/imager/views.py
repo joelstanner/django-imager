@@ -28,6 +28,10 @@ def profile(request):
     return render(request, 'profile.html', {'profile': ImagerProfile.objects.get(pk=request.user.id)})
 
 
+class ProfileUpdate(UpdateView):
+    model = ImagerProfile
+
+
 class PhotoCreate(CreateView):
     model = Photo
     fields = ['title', 'description', 'photo']

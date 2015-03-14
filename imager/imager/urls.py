@@ -11,6 +11,10 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/profile/$', views.profile, name='profile'),
     url(r'^images/', include('imager_images.urls')),
+    url(r'^update_profile/(?P<pk>\d+)/$', views.ProfileUpdate.as_view(
+        template_name="update_profile.html",
+        success_url='/images/library'),
+        name='update_profile'),
     url(r'^add_photo/', views.PhotoCreate.as_view(
         template_name="photo_form.html",
         success_url='/images/library'),
