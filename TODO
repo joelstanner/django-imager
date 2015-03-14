@@ -5,7 +5,7 @@ Permissions
 Resize table colums on profile page
 Add login required to a bunch of stuff
 correct photos showing up for albums
-editing (deleting) for users
+editing (deleting) for users - ONLY IF LOGGED IN AND AUTHED
 don't allow following or blocking of self 
 
 DONE:

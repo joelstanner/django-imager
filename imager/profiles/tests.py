@@ -4,7 +4,7 @@ from django.test import Client
 import factory
 from profiles.models import ImagerProfile
 from imager_images.models import Photo, Album
-#from unittest import skip
+from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -271,6 +271,49 @@ class ProfilePageTests(TestCase):
         self.assertIn(
             'href="/accounts/profile">Bob</a>', response.content
         )
+
+    def test_edit_profile_button_is_present(self):
+        self.client.login(username='Bob', password='password')
+        response = self.client.get('/accounts/profile/')
+        self.assertIn(
+            '<a href="/update_profile/', response.content
+        )
+
+
+class UpdateProfilePageTests(TestCase):
+
+    def setUp(self):
+        self.bob = UserFactory.create(username='bob1')
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.IP_alice = self.alice.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo",
+                                            published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob is awesome",
+                                            published='pb')
+        self.alicephoto = PhotoFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice cool shot",
+                                              published='pb')
+        self.alicealbum = AlbumFactory.create(profile=self.alice.ImagerProfile,
+                                              title="alice awesome",
+                                              published='pb')
+
+        self.client = Client()
+
+    @skip('this is broken')
+    def test_profile_page_items_update_correctly(self):
+        self.client.login(username='bob1', password='password')
+        print self.bob.pk
+        response = self.client.post('/update_profile/' + str(self.bob.pk) + '/',
+                                    {'birthday': '1970-01-02',
+                                     'phone': '666-666-6666',
+                                     'first_name': 'Bobbbbbb',
+                                     'last_name': 'dob',
+                                     'email': 'bob@bob.com'})
+        self.assertEqual(self.IP_bob.birthday, '1970-01-02')
+        self.assertEqual(self.IP_bob.phone, '666-666-6666')
 
 
 class StreamPageTests(TestCase):
