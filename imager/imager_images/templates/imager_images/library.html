@@ -17,10 +17,10 @@
     <a href="/add_album">add album</a>
     {% for album in profile.show_all_albums %}
         <a href="/update_album/{{ album.id }}">
-        {% if not album.cover %}
+        {% if not album.cover_photo %}
             <img src="/media/baby.jpg" width='100' height='100'></a>
         {% else %}
-        {% thumbnail album.cover "100x100" crop="center" as im %}
+        {% thumbnail album.cover_photo.photo "100x100" crop="center" as im %}
             <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
         {% endthumbnail %}
         {% endif %}

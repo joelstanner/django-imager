@@ -17,7 +17,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(default=b'No Title', max_length=256)),
                 ('description', models.TextField(default=b'No Description')),
-                ('cover', models.ImageField(null=True, upload_to=b'', blank=True)),
                 ('date_uploaded', models.DateField(auto_now_add=True)),
                 ('date_modified', models.DateField(auto_now=True)),
                 ('date_published', models.DateField(null=True)),
@@ -47,6 +46,12 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='album',
+            name='cover_photo',
+            field=models.ForeignKey(related_name='cover_set', blank=True, to='imager_images.Photo', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='album',
             name='photos',
             field=models.ManyToManyField(related_name='album_set', null=True, to='imager_images.Photo', blank=True),
             preserve_default=True,
@@ -54,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='album',
             name='profile',
-            field=models.ForeignKey(related_name='album_set', default=None, to='profiles.ImagerProfile'),
+            field=models.ForeignKey(related_name='album_set', to='profiles.ImagerProfile'),
             preserve_default=True,
         ),
     ]
