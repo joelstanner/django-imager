@@ -21,7 +21,8 @@ class AlbumForm(ModelForm):
         self.fields['photos'].queryset = Photo.objects.filter(profile=profile)
         self.fields['cover_photo'].queryset = Photo.objects.filter(profile=profile)
 
+
 class ProfileForm(ModelForm):
 
-	class Meta:
-		model = ImagerProfile
+    class Meta:
+        model = ImagerProfile

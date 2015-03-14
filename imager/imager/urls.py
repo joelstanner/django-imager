@@ -3,7 +3,6 @@ from django.contrib import admin
 import views
 from django.conf.urls.static import static
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = patterns('',
     url(r'^$', views.home, name='home_page'),
@@ -26,17 +25,17 @@ urlpatterns = patterns('',
     url(r'^update_album/(?P<pk>\d+)/$', views.AlbumUpdate.as_view(
         template_name="update_album.html",
         success_url='/images/library'),
-        name='update_album'), 
+        name='update_album'),
     url(r'^update_photo/(?P<pk>\d+)/$', views.PhotoUpdate.as_view(
         template_name="update_photo.html",
         success_url='/images/library'),
-        name='update_photo'),  
+        name='update_photo'),
     url(r'^delete_photo/(?P<pk>\d+)/$', views.PhotoDelete.as_view(
         template_name="delete_photo.html",
-        success_url = '/images/library'),
+        success_url='/images/library'),
         name='delete_photo'),
     url(r'^delete_album/(?P<pk>\d+)/$', views.AlbumDelete.as_view(
         template_name="delete_album.html",
-        success_url = '/images/library'),
-        name='delete_album'), 
+        success_url='/images/library'),
+        name='delete_album'),
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
