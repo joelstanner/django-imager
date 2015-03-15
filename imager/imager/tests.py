@@ -141,7 +141,7 @@ class TestImagerViews(TestCase):
     def test_AlbumCreate_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/add_album/')
-        self.assertTemplateUsed(response, 'albums_form.html')
+        self.assertTemplateUsed(response, 'create_form.html')
 
     def test_AlbumCreate_unreachable_if_loggedout(self):
         response = self.client.get('/add_album/')

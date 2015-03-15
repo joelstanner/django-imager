@@ -16,11 +16,11 @@ urlpatterns = patterns('',
         success_url='/images/library')),
         name='update_profile'),
     url(r'^add_photo/', login_required(views.PhotoCreate.as_view(
-        template_name="photo_form.html",
+        template_name="create_form.html",
         success_url='/images/library')),
         name='add_photo'),
     url(r'^add_album/', login_required(views.AlbumCreate.as_view(
-        template_name="albums_form.html",
+        template_name="create_form.html",
         success_url='/images/library')),
         name='add_album'),
     url(r'^update_album/(?P<pk>\d+)/$', login_required(views.AlbumUpdate.as_view(
