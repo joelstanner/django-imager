@@ -440,3 +440,28 @@ class LibraryPageTests(TestCase):
         self.assertIn("Bob's Library", response.content)
         self.assertIn('Photos:', response.content)
         self.assertIn('Albums:', response.content)
+
+
+class TestImagerViews(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.bob = UserFactory.create()
+        self.alice = UserFactory.create(username='Alice')
+        self.IP_bob = self.bob.ImagerProfile
+        self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob photo",
+                                            published='pb')
+        self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile,
+                                            title="bob awesome album",
+                                            published='pb')
+
+    def test_profile_update_displays_correct_template(self):
+        self.client.login(username='bob1', password='password')
+        response = self.client.get('/profiles/update_profile/' + str(self.bob.pk) + '/')
+        self.assertTemplateUsed(response, 'profiles/update_profile.html')
+
+    def test_profile_update_unreachable_if_loggedout(self):
+        response = self.client.get('/update_profile/' + str(self.bob.pk) + '/')
+        self.assertTemplateNotUsed(response, 'update_profile.html')
+
