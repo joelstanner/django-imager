@@ -24,4 +24,4 @@ def stream(request):
                            {'profile': profile,
                             'profile_pics': recent_pics,
                             'following_pics': following_pics
-                           })
+                            })
