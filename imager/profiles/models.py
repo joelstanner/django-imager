@@ -110,15 +110,6 @@ class ImagerProfile(models.Model):
         return ImagerProfile.objects.exclude(user__is_active=False)
 
 
-@python_2_unicode_compatible
-class Default_Group(Group):
-    name = 'Default Group'
-    permissions = []
-
-    def __str__(self):
-        return self.name
-
-
 def create_user_profile(sender, instance, created, **kwargs):
     """Create an ImagerProfile whenever you create a user"""
     if created:
