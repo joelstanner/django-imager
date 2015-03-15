@@ -37,11 +37,8 @@ class ProfileForm(ModelForm):
 
     def save(self, *args, **kwargs):
         obj = super(ProfileForm, self).save(*args, **kwargs)
-        print obj.user.first_name
         obj.user.first_name = self.cleaned_data['first_name']
         obj.user.last_name = self.cleaned_data['last_name']
         obj.user.email = self.cleaned_data['email']
         obj.user.save()
-        print obj.user.first_name
-        # import pdb; pdb.set_trace()
         return obj
