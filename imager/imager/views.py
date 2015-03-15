@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from imager_images.models import Photo, Album
 from profiles.models import ImagerProfile
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from forms import PhotoForm, AlbumForm, ProfileForm
+from forms import AlbumForm, ProfileForm
 from profiles.models import ImagerProfile
 
 
