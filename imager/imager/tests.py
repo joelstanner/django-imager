@@ -116,7 +116,7 @@ class TestImagerViews(TestCase):
     def test_PhotoDelete_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
         response = self.client.get('/delete_photo/' + str(self.bobphoto.id) + '/')
-        self.assertTemplateUsed(response, 'delete_photo.html')
+        self.assertTemplateUsed(response, 'delete_form.html')
 
     def test_PhotoDelete_unreachable_if_loggedout(self):
         response = self.client.get('/delete_photo/' + str(self.bobphoto.id) + '/')
@@ -162,7 +162,7 @@ class TestImagerViews(TestCase):
         self.client.login(username='Bob', password='password')
         self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile)
         response = self.client.get('/delete_album/' + str(self.bobalbum.id) + '/')
-        self.assertTemplateUsed(response, 'delete_album.html')
+        self.assertTemplateUsed(response, 'delete_form.html')
 
     def test_AlbumDelete_unreachable_if_loggedout(self):
         self.bobalbum = AlbumFactory.create(profile=self.bob.ImagerProfile)

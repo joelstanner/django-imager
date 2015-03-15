@@ -32,11 +32,11 @@ urlpatterns = patterns('',
         success_url='/images/library')),
         name='update_photo'),
     url(r'^delete_photo/(?P<pk>\d+)/$', login_required(views.PhotoDelete.as_view(
-        template_name="delete_photo.html",
+        template_name="delete_form.html",
         success_url='/images/library')),
         name='delete_photo'),
     url(r'^delete_album/(?P<pk>\d+)/$', login_required(views.AlbumDelete.as_view(
-        template_name="delete_album.html",
+        template_name="delete_form.html",
         success_url='/images/library')),
         name='delete_album'),
 )+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
