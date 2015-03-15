@@ -33,11 +33,6 @@ class ProfileUpdate(UpdateView):
     model = ImagerProfile
     form_class = ProfileForm
 
-    def get_form(self, form_class):
-        form = super(ProfileUpdate, self).get_form(form_class)
-        form.fields['first_name'].initial = self.request.user.first_name
-        return form
-
     def dispatch(self, request, *args, **kwargs):
         if int(self.kwargs['pk']) != self.request.user.id:
             return redirect('/accounts/login/')
