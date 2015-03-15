@@ -97,8 +97,8 @@ class TestImagerViews(TestCase):
 
     def test_profile_update_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/update_profile/' + str(self.bob.pk) + '/')
-        self.assertTemplateUsed(response, 'update_profile.html')
+        response = self.client.get('/profiles/update_profile/' + str(self.bob.pk) + '/')
+        self.assertTemplateUsed(response, 'profiles/update_profile.html')
 
     def test_profile_update_unreachable_if_loggedout(self):
         response = self.client.get('/update_profile/' + str(self.bob.pk) + '/')

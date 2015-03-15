@@ -223,22 +223,22 @@ class ProfilePageTests(TestCase):
         self.client = Client()
 
     def test_profile_page_NON_AUTHENTICATED(self):
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertEqual(response.status_code, 302)  # REDIRECTS TO LOGIN
 
     def test_profile_page_LOGGEDIN(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertEqual(response.status_code, 200)
 
     def test_profile_page_displays_correct_template(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/accounts/profile/')
-        self.assertTemplateUsed(response, 'profile.html')
+        response = self.client.get('/profiles/')
+        self.assertTemplateUsed(response, 'profiles/profile.html')
 
     def test_profile_page_displays_correct_profile_picture(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertIn('text.txt', response.content)
 
     def test_profile_page_lists_correct_number_of_items(self):
@@ -248,7 +248,7 @@ class ProfilePageTests(TestCase):
         self.IP_alice.follow(self.IP_bob)
         self.IP_bob.follow(self.IP_alice)
 
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertIn('2 Photos', response.content)
         self.assertIn('1 Album', response.content)
         self.assertIn('1 Follower', response.content)
@@ -267,16 +267,16 @@ class ProfilePageTests(TestCase):
 
     def test_displayed_logged_in_as_name_is_link_to_profile_page(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertIn(
-            'href="/accounts/profile">Bob</a>', response.content
+            'href="/profiles">Bob</a>', response.content
         )
 
     def test_edit_profile_button_is_present(self):
         self.client.login(username='Bob', password='password')
-        response = self.client.get('/accounts/profile/')
+        response = self.client.get('/profiles/')
         self.assertIn(
-            '<a href="/update_profile/', response.content
+            '<a href="update_profile/', response.content
         )
 
 
@@ -316,11 +316,12 @@ class UpdateProfilePageTests(TestCase):
 
     def test_user_cannot_update_someone_elses_profile(self):
         self.client.login(username='bob1', password='password')
-        response = self.client.get('/update_profile/' + str(self.alice.pk) + '/',
+        response = self.client.get('/profiles/update_profile/' + str(self.alice.pk) + '/',
                                    follow=True)
 
         self.assertEqual(response.redirect_chain,
                             [('http://testserver/accounts/login/', 302)])
+
 
 class StreamPageTests(TestCase):
     def setUp(self):

@@ -1,12 +1,5 @@
 TODO:
   
-¿Logout page redirects to the homepage?
-Permissions
-Resize table colums on profile page
-Add login required to a bunch of stuff
-correct photos showing up for albums
-editing (deleting) for users - ONLY IF LOGGED IN AND AUTHED
-don't allow following or blocking of self 
 
 DONE:
 
@@ -14,3 +7,4 @@ Login redirects to profile
 Navbar has seperators between link items
 Pluralize words in profile template
 add templating to edit screens
+
