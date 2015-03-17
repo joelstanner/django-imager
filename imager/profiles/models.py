@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
@@ -49,10 +49,10 @@ class ImagerProfile(models.Model):
         self.blocked.remove(IProfile)
 
     def following(self):
-        return self.follows.exclude(blocked=self)
+        return self.follows.exclude(blocked=self).exclude(blockedby_set=self)
 
     def followers(self):
-        return self.followers_set.exclude(blocked=self)
+        return self.followers_set.exclude(blocked=self).exclude(blockedby_set=self)
 
     def follow(self, IProfile):
         if IProfile in self.blockedby_set.all():
@@ -83,9 +83,19 @@ class ImagerProfile(models.Model):
 
     def show_photos(self):
         return self.photo_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self) |
+                                      Q(published='pv'))
+
+    def show_all_photos(self):
+        return self.photo_set.exclude(Q(profile__blocked=self) |
                                       Q(profile__blockedby_set=self))
 
     def show_albums(self):
+        return self.album_set.exclude(Q(profile__blocked=self) |
+                                      Q(profile__blockedby_set=self) |
+                                      Q(published='pv'))
+
+    def show_all_albums(self):
         return self.album_set.exclude(Q(profile__blocked=self) |
                                       Q(profile__blockedby_set=self))
 

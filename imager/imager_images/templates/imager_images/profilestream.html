@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class='container'>
+    {% load thumbnail %}
+
+    <h1>{{profile.user.username}}'s recent photos:</h1>
+    {% for pic in profile_pics %}
+        <p>uploaded on {{pic.date_uploaded}}</p>
+       {% thumbnail pic.photo "100x100" crop="center" as im %}
+        <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+    {% endthumbnail %}
+    {% endfor %}
+    <h1>Recently uploaded photos by Followed:</h1>
+    {% for pic_set in following_pics %}
+        {% for pic in pic_set %}
+            <p>uploaded on {{pic.date_uploaded}} by {{ pic.profile.user.username }}</p>
+            {% thumbnail pic.photo "100x100" crop="center" as im %}
+                <img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}">
+            {% endthumbnail %}
+        {% endfor %}
+        <br/>
+    {% endfor %}
+</div>
+{% endblock %}
