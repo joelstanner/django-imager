@@ -1,4 +1,4 @@
-from settings import DEBUG, TEMPLATE_DEBUG, ALLOWED_HOSTS, STATIC_ROOT, BASE_DIR
+from settings import *
 import os
 
 DEBUG = False
