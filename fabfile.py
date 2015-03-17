@@ -1,4 +1,5 @@
 # ssh -i ~/.ssh/django_imager.pem ubuntu@ec2-52-10-7-243.us-west-2.compute.amazonaws.com
+# Robert's: http://ec2-54-148-71-55.us-west-2.compute.amazonaws.com
 
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
