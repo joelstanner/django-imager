@@ -25,9 +25,9 @@ class Migration(migrations.Migration):
                 ('picture_priv', models.BooleanField(default=True)),
                 ('phone_priv', models.BooleanField(default=True)),
                 ('birthday_priv', models.BooleanField(default=True)),
-                ('blocked', models.ManyToManyField(related_name='blocked_rel_+', to='profiles.ImagerProfile')),
-                ('follows', models.ManyToManyField(to='profiles.ImagerProfile')),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('blocked', models.ManyToManyField(related_name='blockedby_set', to='profiles.ImagerProfile', blank=True)),
+                ('follows', models.ManyToManyField(related_name='followers_set', to='profiles.ImagerProfile', blank=True)),
+                ('user', models.OneToOneField(related_name='ImagerProfile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

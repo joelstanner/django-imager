@@ -1,0 +1,12 @@
+.navbar-right {
+    display: inline-block;
+}
+
+.profile_name {
+    color: #ff432e
+}
+
+a.profile_name:hover{
+    color: #ae2d20;
+    text-decoration: underline;
+}

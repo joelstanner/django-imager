@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+  <div class="container">
+    <div class="jumbotron container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <h2>IMAGER</h2>
+          <p>This site is all about images. Your images.</p>
+          <p>Share with friends! Follow other IMAGER users!</p>
+          <p><a href="/accounts/login" class="btn btn-primary" role="button">LOG IN</a>
+             <a href="/accounts/register" class="btn btn-default" role="button">Register</a></p>
+        </div>
+        <!--REPLACE BELOW WITH REAL IMAGES FROM THE SITE-->
+        <img class="col-md-9 img-rounded img-responsive"
+             src="{{ random_photo }}">
+      </div>
+    </div>
+  </div>
+{% endblock %}
