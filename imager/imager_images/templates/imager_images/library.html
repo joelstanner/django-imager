@@ -10,7 +10,6 @@
     <a href="add_photo">add photo</a>
     {% for photo in profile.show_all_photos %}
         <a href="update_photo/{{ photo.id }}">
-        <img src="photo.photo.url">
        {% thumbnail photo.photo "100x100" crop="center" as im %}
             <img src="{{ im.url}}" width="{{ im.width }}" height="{{ im.height }}">
         {% endthumbnail %}
