@@ -113,11 +113,11 @@ TEMPLATE_DIRS = [
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'djangotestemail@gmail.com'
-EMAIL_HOST_PASSWORD = 'password666'
-EMAIL_PORT = 25
+EMAIL_HOST_USER = 'poolbath1@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
 
-DEFAULT_FROM_EMAIL = 'djangotestemail@gmail.com'
+DEFAULT_FROM_EMAIL = 'poolbath1@gmail.com'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
