@@ -58,6 +58,10 @@ class TestLogin(LiveServerTestCase):
         self.assertIn('Stream', self.driver.page_source)
         self.assertIn('Log out', self.driver.page_source)
 
+        # user now logs off, a thoroughly satisfied user.
+        self.driver.find_element_by_link_text("Log out").click()
+        self.assertIn('Logged out', self.driver.page_source)
+
         # except Exception as e:
         #     self.driver.save_screenshot('SCREEN_DUMP_LOCATION.png')
         #     raise e
