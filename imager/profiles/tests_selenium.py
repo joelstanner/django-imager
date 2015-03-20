@@ -38,41 +38,32 @@ class TestLogin(LiveServerTestCase):
         self.driver.quit()
         super(TestLogin, self).tearDown()
 
-    def test_unauthorized_index(self):
-        self.driver.get(self.live_server_url)
-        self.assertIn('Login', self.driver.page_source)
-        self.assertIn('Register', self.driver.page_source)
-
-    def test_authorized_index(self):
-        # try:
+    def test_login_goes_to_profile(self):
+        # user presses login
         self.driver.get(self.live_server_url)
         self.driver.find_element_by_link_text("Login").click()
+
+        # user enters credentials and submits form
         form = self.driver.find_element_by_tag_name("form")
         username_field = self.driver.find_element_by_id("id_username")
         username_field.send_keys("Bob")
         password_field = self.driver.find_element_by_id("id_password")
         password_field.send_keys("password")
         form.submit()
-        self.assertIn('Bob', self.driver.page_source)
-        self.assertIn('Library', self.driver.page_source)
-        self.assertIn('Stream', self.driver.page_source)
-        self.assertIn('Log out', self.driver.page_source)
 
-        # except Exception as e:
-        #     self.driver.save_screenshot('SCREEN_DUMP_LOCATION.png')
-        #     raise e
+        # user see his profile page
+        self.assertIn('Bob has', self.driver.page_source)
+        self.assertIn('Bob is following', self.driver.page_source)
+        self.assertIn('Personal Info', self.driver.page_source)
 
-    def test_login_unauthorized_user(self):
-        self.driver.get(self.live_server_url)
-        self.driver.find_element_by_link_text("Login").click()
-        form = self.driver.find_element_by_tag_name("form")
-        username_field = self.driver.find_element_by_id("id_username")
-        username_field.send_keys("Not a user")
-        password_field = self.driver.find_element_by_id("id_password")
-        password_field.send_keys("fake password")
-        form.submit()
-        self.assertIn('Please enter a correct username and password', self.driver.page_source)
+        # user clicks on edit profile
+        self.driver.find_element_by_tag_name("button").click()
 
-    def test_random_image(self):
-        self.driver.get(self.live_server_url)
-        self.assertIn('default_stock_photo', self.driver.page_source)
+        # user sees profile edit page
+        self.assertIn('Picture:', self.driver.page_source)
+        self.assertIn('Change:', self.driver.page_source)
+        self.assertIn('First Name', self.driver.page_source)
+
+        # user edits name
+        self.driver.find_element_by_id("id_first_name").send_keys("SuperBob")
+        self.driver.find_element_by_tag_name("form").submit()
