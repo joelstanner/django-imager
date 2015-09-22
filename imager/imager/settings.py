@@ -99,7 +99,7 @@ TEMPLATE_DIRS = [
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'poolbath1@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = os.environ['DJANGO_EMAIL_PASSWORD']
 EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = 'poolbath1@gmail.com'
@@ -115,3 +115,4 @@ if DEBUG:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
