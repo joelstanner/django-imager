@@ -27,16 +27,16 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.PostGenerationMethodCall('set_password', 'password')
 
 
-class TestLogin(LiveServerTestCase):
+class TestImagerPages(LiveServerTestCase):
 
     def setUp(self):
         self.driver = webdriver.Firefox()
-        super(TestLogin, self).setUp()
+        super(TestImagerPages, self).setUp()
         self.bob = UserFactory.create()
 
     def tearDown(self):
         self.driver.quit()
-        super(TestLogin, self).tearDown()
+        super(TestImagerPages, self).tearDown()
 
     def test_login_goes_to_profile(self):
         # user presses login
@@ -77,3 +77,20 @@ class TestLogin(LiveServerTestCase):
         self.assertIn("Description", self.driver.page_source)
 
         # user adds photo
+        self.driver.find_element_by_id("id_photo").send_keys(os.getcwd()+"/PIA14944_SaturnHur1000.jpg")
+        form = self.driver.find_element_by_tag_name("form")
+        form.submit()
+
+        # user is redirected to library page with a thumbnail of the new photo
+        self.assertIn("update_photo", self.driver.page_source)
+
+        # user goes to album page and sets cover to new photo
+        self.driver.find_element_by_link_text("add album").click()
+        self.driver.find_element_by_id("id_cover_photo").click()
+        self.driver.find_element_by_xpath('//*[@id="id_cover_photo"]/option[2]').click()
+
+        form = self.driver.find_element_by_tag_name("form")
+        form.submit()
+
+        # user is redirected to library page with a thumbnail of the new album
+        self.assertIn("update_album", self.driver.page_source)
