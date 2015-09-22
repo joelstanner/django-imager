@@ -3,10 +3,14 @@ imager:
   build: ./imager/
   expose:
     - "8000"
+  volumes:
+    - /usr/src/app/static
+  environment:
+    - EMAIL_HOST_PASSWORD=password
+    - DATABASE_HOST=postgres
+  command: /usr/local/bin/gunicorn imager.wsgi:application -w 2 -b :8000
   links:
     - postgres:postgres
-  env_file: .env
-  command: /usr/local/bin/gunicorn imager.wsgi:application -w 2 -b :8000
 
 nginx:
   restart: always
@@ -16,12 +20,21 @@ nginx:
   volumes:
     - /www/static
   volumes_from:
-    - web
+    - imager
   links:
-    - web:web
+    - imager:imager
 
 postgres:
   restart: always
   image: postgres:latest
+  volumes_from:
+    - data
   ports:
     - "5432:5432"
+
+data:
+  restart: always
+  image: postgres:latest
+  volumes:
+    - /var/lib/postgresql
+  command: /bin/true
