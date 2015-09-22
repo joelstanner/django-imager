@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -61,9 +60,14 @@ ROOT_URLCONF = 'imager.urls'
 WSGI_APPLICATION = 'imager.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://postgres:@localhost:5432/imager'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME', 'imager'),
+        'USER': os.getenv('DATABASE_USER', 'imageradmin'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+        'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
+    }
 }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

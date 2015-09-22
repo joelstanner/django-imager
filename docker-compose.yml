@@ -27,6 +27,10 @@ nginx:
 postgres:
   restart: always
   image: postgres:latest
+  environment:
+    - POSTGRESQL_DB=imagerdb
+    - POSTGRESQL_USER=imageradmin
+    - POSTGRESQL_PASSWORD=password
   volumes_from:
     - data
   ports:
