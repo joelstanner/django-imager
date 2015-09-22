@@ -4,11 +4,8 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 
 import os
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
 
 from django.contrib.auth.models import User
-from imager_images.models import Photo, Album
 import factory
 
 
