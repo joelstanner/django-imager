@@ -1,3 +1,15 @@
+postgres:
+  restart: always
+  image: postgres:latest
+  environment:
+    - POSTGRESQL_DB=postgres
+    - POSTGRESQL_USER=postgres
+    - POSTGRESQL_PASSWORD=password
+  volumes_from:
+    - data
+  ports:
+    - "5432:5432"
+
 imager:
   restart: always
   build: ./imager/
@@ -23,18 +35,6 @@ nginx:
     - imager
   links:
     - imager:imager
-
-postgres:
-  restart: always
-  image: postgres:latest
-  environment:
-    - POSTGRESQL_DB=imagerdb
-    - POSTGRESQL_USER=imageradmin
-    - POSTGRESQL_PASSWORD=password
-  volumes_from:
-    - data
-  ports:
-    - "5432:5432"
 
 data:
   restart: always
