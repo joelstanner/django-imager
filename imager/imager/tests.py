@@ -1,10 +1,8 @@
 from __future__ import print_function
 from django.test import TestCase
 from django.contrib.auth.models import User
-from imager_images.models import Photo
+from imager_images.models import Photo, Album
 from django.test import Client
-
-
 import factory
 
 
@@ -15,6 +13,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('username',)
 
     username = 'Bob'
+    password = factory.PostGenerationMethodCall('set_password', 'password')
 
 
 class PhotoFactory(factory.django.DjangoModelFactory):
@@ -24,6 +23,14 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
     profile = UserFactory.create(username='Bobby').ImagerProfile
     photo = 'picture.jpeg'
+
+
+class AlbumFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Album
+
+    profile = UserFactory.create(username='Freddy').ImagerProfile
 
 
 class TestHomepageViews(TestCase):
@@ -72,3 +79,5 @@ class TestRegistrationViews(TestCase):
                           'password2': 'test'}
                          )
         self.assertEqual(len(User.objects.all()), 1)
+
+

@@ -23,7 +23,7 @@
           <div class="nav navbar-right">
             {% if user.is_authenticated %}
               {% trans "Logged in" %}: <a class="profile_name"
-              href="/accounts/profile">{{ user.username }}</a> 
+              href="/profiles">{{ user.username }}</a> 
               <a href='/images/library'>| Library </a>
               <a href='/images/stream'>| Stream |</a>
               (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 

@@ -19,11 +19,15 @@ class Album(models.Model):
                                     related_name='album_set',
                                     blank=True,
                                     null=True)
-
+    cover_photo = models.ForeignKey('Photo',
+                              related_name='cover_set',
+                              blank=True,
+                              null=True)
     title = models.CharField(max_length=256, default='No Title')
+
     description = models.TextField(default='No Description')
 
-    cover = models.ImageField(blank=True, null=True)
+    # cover = models.ImageField(blank=True, null=True)
 
     date_uploaded = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
@@ -49,7 +53,7 @@ class Album(models.Model):
         self.photos.add(photo)
 
     def designate_cover(self, photo):
-        self.cover = photo.photo
+        self.cover_photo = photo
 
     def show_photos(self):
         return self.photos.all()
@@ -83,7 +87,7 @@ class Photo(models.Model):
                                    blank=True,
                                    null=True)
 
-    photo = models.ImageField(blank=True, null=True)
+    photo = models.ImageField(blank=False, null=False)
 
     title = models.CharField(max_length=256, default='No Title')
     description = models.TextField(default='No Description')

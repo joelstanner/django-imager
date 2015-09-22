@@ -1,13 +1,10 @@
 TODO:
   
-¿Logout page redirects to the homepage?
-Permissions
-Resize table colums on profile page
-
-
 
 DONE:
 
 Login redirects to profile
 Navbar has seperators between link items
 Pluralize words in profile template
+add templating to edit screens
+
