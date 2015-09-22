@@ -60,21 +60,6 @@ ROOT_URLCONF = 'imager.urls'
 
 WSGI_APPLICATION = 'imager.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'imager',
-#         'USER': 'postgres',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://postgres:@localhost:5432/imager'
@@ -118,8 +103,6 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = 'poolbath1@gmail.com'
-
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SITE_ID = 1
 
