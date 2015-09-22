@@ -111,7 +111,15 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'imager/templates/registration'),
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'poolbath1@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
+
+DEFAULT_FROM_EMAIL = 'poolbath1@gmail.com'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SITE_ID = 1
 
