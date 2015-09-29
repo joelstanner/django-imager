@@ -111,7 +111,7 @@ REGISTRATION_AUTO_LOGIN = True  # auto-login upon registering
 LOGOUT_URL = '/'
 LOGIN_REDIRECT_URL = '/profiles/'
 # FOR FASTER TESTS --- REMOVE FOR PRODUCTION
-if DEBUG:
+if DEBUG == True:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )

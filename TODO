@@ -1,10 +1,11 @@
 TODO:
-Pagination of stream page.  
+Pagination of stream page.
+
+Deployment - 
+  Docker logs
+  static files
+  email validation
 
 DONE:
 
-Login redirects to profile
-Navbar has seperators between link items
-Pluralize words in profile template
-add templating to edit screens
 
