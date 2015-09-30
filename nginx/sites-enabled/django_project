@@ -11,6 +11,10 @@ server {
         alias /usr/src/app/media;
     }
     
+    location /favicon.ico {
+    alias /usr/src/app/static;
+    }
+    
     location / {
         proxy_pass http://imager:8000;
         proxy_set_header Host $host;

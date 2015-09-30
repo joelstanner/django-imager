@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'profiles',
     'imager_images',
-    'favicon',
 )
 
 

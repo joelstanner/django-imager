@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^profiles/', include('profiles.urls')),
     url(r'^images/', include('imager_images.urls')),
-    url(r'^', include('favicon.urls')),
 )
 
 if settings.DEBUG is True:
