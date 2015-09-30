@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name _;
+    server_name 192.168.99.100 .joelstanner.com;
     charset utf-8;
 
     location /static {

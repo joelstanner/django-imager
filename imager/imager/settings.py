@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'profiles',
     'imager_images',
-    # 'debug_toolbar',
+    'favicon',
 )
 
 
@@ -96,13 +96,15 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'imager/templates/registration'),
 ]
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'poolbath1@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 587
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'box405.bluehost.com'
+EMAIL_HOST_USER = 'imager@joelstanner.com'
+EMAIL_HOST_PASSWORD = os.environ['DJANGO_EMAIL_PASSWORD']
+EMAIL_PORT = 465
 
-DEFAULT_FROM_EMAIL = 'poolbath1@gmail.com'
+DEFAULT_FROM_EMAIL = 'imager@joelstanner.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 SITE_ID = 1
 
@@ -111,8 +113,9 @@ REGISTRATION_AUTO_LOGIN = True  # auto-login upon registering
 LOGOUT_URL = '/'
 LOGIN_REDIRECT_URL = '/profiles/'
 # FOR FASTER TESTS --- REMOVE FOR PRODUCTION
-if DEBUG == True:
+
+
+if DEBUG is True:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

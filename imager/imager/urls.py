@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^profiles/', include('profiles.urls')),
     url(r'^images/', include('imager_images.urls')),
+    url(r'^', include('favicon.urls')),
 )
 
-if settings.DEBUG:
+if settings.DEBUG is True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
